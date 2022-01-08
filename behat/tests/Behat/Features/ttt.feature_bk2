@@ -1,0 +1,30 @@
+@test
+
+Feature: api callToAction
+
+  Scenario Outline: Api - check sibilla sql query status
+    Given the request body is:
+      """
+{
+	"authenticationCode": "1976",
+	"actions": [{
+		"name": "sql",
+		"parameters": {
+			"query": "<query>"
+		}
+	}]
+}
+      """
+
+    When I request "/sibilla/api/post.php" using HTTP POST
+    Then the response code is 200
+    And the response body is:
+      """
+	{"actions":[{"name":"sql","query":"<query>","results":[<results>]},{}]}
+      """
+
+    Examples:
+      | query                                                                | results   |
+      | INSERT INTO syb_test (json_state) VALUES ('ddd');                    | true      |
+      | INSERT INTOs syb_test (json_state) VALUES ('ddd');                   | false     |
+      | select json_state from syb_test  order by created_time desc limit 1; | [["ddd"]] |

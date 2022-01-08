@@ -1,0 +1,26 @@
+version: "2"
+# sibilla/behat$ docker-compose up -d
+
+# docker ps -a
+# docker exec -it 6a3ce7e09f11(oro_behat) sh
+services:
+  # Behat
+  oro_behat:
+    hostname: oro_behat
+    image: amatera/oro_behat
+    volumes:
+      - ./html_report:/var/www/html/html_report
+      - .:/var/www/html
+      - ./config:/var/www/html/config
+      - ./behat.yml:/var/www/html/behat.yml
+      - ./var/cache:/var/www/html/var/cache
+    # Run a built-in web server for access to HTML reports
+    ports:
+     - 8000:8000
+    entrypoint: "php -S 0.0.0.0:8000"
+  # Selenium
+  browser:
+    hostname: browser
+    # Pick/uncomment one
+    image: selenium/standalone-chrome
+    #image: selenium/standalone-firefox

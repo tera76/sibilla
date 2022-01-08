@@ -1,0 +1,101 @@
+<?php
+require __DIR__ . '/conf/environment.conf.php';
+
+class sqlAction
+{
+
+
+
+    public function ciccioaa()
+    {
+        var_dump("ciccio");
+        die();
+    }
+
+
+    public function ciccio()
+    {
+        var_dump("soooooca");
+
+
+
+        //  var_dump("ciccio");
+     //   $config = new \Doctrine\DBAL\Configuration;
+     //   var_dump($config);
+
+        $connectionParams = array(
+
+
+            'dbname' =>host,
+            'user' => username,
+            'password' => password,
+            'host' => database,
+            'driver' => 'pdo_mysql'
+        );
+
+
+        var_dump($connectionParams);
+
+        var_dump("ciccio");
+        $dbConnect = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
+        die();
+        $dbConnect= \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
+        var_dump($dbConnect);
+die();
+
+    //    $dbConnect = new mysqli(host, username, password, database) or die("Errore durante la connessione al database");
+
+        var_dump($sql);
+
+        try {
+            $data = $dbConnect->query($sql)->fetch_all();
+        } catch (Exception $e) {
+            var_dump($sql);
+            //   die();
+            $data = $dbConnect->query();
+            //   var_dump("catch");
+            // return $data;
+            //   exit();
+        }
+
+        header("content-type:application/json");
+
+        echo '{"name":"sql","query":"', $sql . '","results":[';
+        echo json_encode($data);
+        echo "]},";
+
+        $dbConnect->close();
+    }
+
+
+    /*
+        public function sqlUpdate($action)
+        {
+            $sql = $action["parameters"]["query"];
+
+
+            require __DIR__ . '/conf/environment.conf.php';
+
+
+            $dbConnect = new mysqli(host, username, password, database) or die("Errore durante la connessione al database");
+
+
+            $data = $dbConnect->query($sql);
+
+            header("content-type:application/json");
+
+            echo '{"name":"sqlUpdate","query":"', $sql . '","results":[';
+            echo json_encode($data);
+            echo "]},";
+
+            $dbConnect->close();
+        }
+    */
+}
+
+
+
+
+
+

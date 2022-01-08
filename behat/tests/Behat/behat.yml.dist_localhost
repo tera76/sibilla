@@ -1,0 +1,118 @@
+default: &default
+  autoload:
+    '': tests/Behat/Context
+  suites:
+    default:
+      parameters: &defaultParam
+        database_name: quantum_experience
+        database_user: root
+        database_password: root
+        database_host: db
+        connections:
+          default:
+            name: quantum_experience
+            user: root
+            password: root
+            host: db
+          messenger:
+            name: messenger
+            user: root
+            password: root
+            host: db
+        auth:
+          admin:
+            email: admin@leadspark.app
+            password: admin
+            token: 1234567890
+
+      contexts:
+        - Behat\MinkExtension\Context\MinkContext
+        - ChiliCASContext:
+            parameters: *defaultParam
+        - FeatureContext
+        - AccountDetailContext:
+            parameters: *defaultParam
+        - LeadQualificationContext:
+            parameters: *defaultParam
+        - LeadDetailContext:
+            parameters: *defaultParam
+        - RulesEngineContext:
+            parameters: *defaultParam
+        - OpportunityDetailContext:
+            parameters: *defaultParam
+        - ContactDetailContext:
+            parameters: *defaultParam
+        - SmsEmailTemplateDetailContext:
+            parameters: *defaultParam
+        - UtilityContext:
+            parameters: *defaultParam
+        - Import\OfferAfterSalesContext:
+            parameters: *defaultParam
+        - Base\ApiFeaturesContext:
+            parameters: *defaultParam
+        - Base\BaseContext
+        - QuantumExperienceContext
+        - SibillaLogContext:
+            parameters: *defaultParam
+
+      paths:
+        - tests/Behat/Features
+        - tests/Utils
+
+  extensions:
+    Behat\MinkExtension:
+      #  base_url: 'https://tulu-develop.ew1.eu'
+      base_url: 'localhost'
+      # base_url: 'http://h2-proxy'
+      default_session: 'first_session'
+      javascript_session: 'first_session'
+      sessions:
+        first_session:
+          selenium2:
+            wd_host: 'http://localhost:4444/wd/hub'
+            capabilities:
+              chrome:
+                switches:
+                  # - "--headless"
+                  - "--disable-gpu"
+                  - "--window-size=1920,1080"
+                  - "--no-sandbox"
+      browser_name: chrome
+    SensioLabs\Behat\PageObjectExtension: ~
+    Imbo\BehatApiExtension:
+      apiClient:
+        # base_uri: https://leadspark2-staging-api.ew1.eu
+        # base_uri: http://google.com
+        # base_uri: http://php
+        #base_uri: http://localhost
+        base_uri: https://pasteurian-visitors.000webhostapp.com
+        timeout: 8.0
+        verify: false
+        # Behat\Symfony2Extension:
+        #   kernel:
+        #     path: src/Kernel.php
+        #     class: App\Kernel
+
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Behat2
+      file_name: Index
+      print_args: true
+      print_outp: true
+      loop_break: true
+
+
+
+
+
+chromedriver:
+  <<: *default
+
+docker:
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      oroSelenium2: ~
+    Behat\Symfony2Extension: ~
+
+

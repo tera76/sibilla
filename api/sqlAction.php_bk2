@@ -1,0 +1,41 @@
+<?php
+require __DIR__ . '/conf/environment.conf.php';
+
+class sqlAction
+{
+
+
+
+
+
+
+        public function sql($action)
+        {
+            $sql = $action["parameters"]["query"];
+
+
+
+            $dbConnect = new mysqli(host, username, password, database) or die("Errore durante la connessione al database");
+
+
+
+
+            $data = $dbConnect->query($sql)->fetch_all();
+
+            header("content-type:application/json");
+
+            echo '{"name":"sql","query":"', $sql . '","results":[';
+            echo json_encode($data);
+            echo "]},";
+
+            $dbConnect->close();
+
+        }
+
+}
+
+
+
+
+
+

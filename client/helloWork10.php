@@ -1,0 +1,388 @@
+<?php
+
+
+if (isset($_GET['comment'])) {
+    $input_comment = $_GET['comment'];
+//    $input_comment = $_GET['comment'];
+    $insertSql = "INSERT INTO syb_alarms_history (data,value) VALUES ('comment_this', '$input_comment');";
+    $data = <<<EOD
+{
+	"request": [{
+			"name": "login",
+			"parameters": {
+				"keyCode1": "1976"
+			}
+		},
+		{
+			"name": "sql",
+			"parameters": {
+				"query": "$insertSql"
+			}
+		},
+{
+            "name": "getAlarmsDZero",
+            "parameters": {}
+        },
+        {
+            "name": "getAlarmsTotalView",
+            "parameters": {}
+        },
+        {
+            "name": "getAlarms_current_time_link",
+            "parameters": {}
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "total_population"
+                           }
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "corriere_primaPosClassifica_totView"
+                           }
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "coronaVirus_Total_confirmed"
+                           }
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "cicciolina_altezza"
+                           }
+        }, 
+                {
+            "name": "getAlarms_source_link",
+            "parameters": {
+                "name": "gold_price"
+            }
+        },
+        {
+		"name": "sql",
+		"from": "getDataFrom",
+		"parameters": {
+			"query": "select timestamp from syb_alarms_history order by id asc limit 1 "
+		}}, 
+        {
+		"name": "sql",
+		"from": "getDataTo",
+		"parameters": {
+			"query": "select timestamp from syb_alarms_history order by id desc limit 1 "
+		}}
+    ]
+}
+EOD;
+
+} else {
+
+
+    $data = <<<EOD
+{
+    "request": [
+        {
+            "name": "login",
+            "parameters": {
+                "keyCode1": "1976"
+            }
+        },
+        {
+            "name": "getAlarmsDZero",
+            "parameters": {}
+        },
+        {
+            "name": "getAlarmsTotalView",
+            "parameters": {}
+        },
+        {
+            "name": "getAlarms_current_time_link",
+            "parameters": {}
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "total_population"
+                           }
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "corriere_primaPosClassifica_totView"
+                           }
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "coronaVirus_Total_confirmed"
+                           }
+        },
+        {
+            "name": "getAlarms_source_link",
+            "parameters": {
+               "name": "cicciolina_altezza"
+                           }
+        }, 
+                {
+            "name": "getAlarms_source_link",
+            "parameters": {
+                "name": "gold_price"
+            }
+        },
+        {
+		"name": "sql",
+		"from": "getDataFrom",
+		"parameters": {
+			"query": "select timestamp from syb_alarms_history order by id asc limit 1 "
+		}}, 
+        {
+		"name": "sql",
+		"from": "getDataTo",
+		"parameters": {
+			"query": "select timestamp from syb_alarms_history order by id desc limit 1 "
+		}}
+    ]
+}
+EOD;
+}
+
+$dataToarray = json_decode($data);
+$data = json_encode($dataToarray, JSON_PRETTY_PRINT);
+
+// $data = $_POST['request'];
+
+$testCallresponse = helloWork($data);
+
+
+function helloWork($data)
+{
+
+
+    $start = microtime(true);
+
+//Recupero il valore del parametro "$code"
+// $data = $_POST['request'];
+//    echo '*********** send: ', '</br>';
+    //   echo $data;
+
+    $postdata = $data; //http_build_query($data);
+    $opts = array('http' =>
+        array(
+            'method' => 'POST',
+            'header' => 'Content-type: application/x-www-form-urlencoded',
+            'content' => $postdata
+        )
+    );
+
+
+    require __DIR__ . '/../api/conf/environment.conf.php';
+
+    //  $url = "http://localhost/sibilla/api/post.php";
+    // $url = "https://pasteurian-visitors.000webhostapp.com/sibilla/api/post.php";
+    $url = apiEntryPoint;
+
+
+    $context = stream_context_create($opts);
+
+    $response = file_get_contents($url, false, $context);
+
+    if ($response === false) {
+        exit("Unable to update data at $url");
+    }
+
+
+    if (JSON_ERROR_NONE !== json_last_error()) {
+        exit("Failed to parse json: " . json_last_error_msg());
+    }
+
+
+    // var_dump($response);
+
+    $response = json_decode($response);
+
+    // initialize var used in the page
+
+    $ciccio = $response->response;
+    $count = count($ciccio);
+    $current_date = null;
+    $total_population = null;
+    $total_population_link = null;
+    $current_topic = null;
+    $corriere_topic_totalViews = null;
+    $coronaVirus_Total_confirmed = null;
+    $last_comment = null;
+    $total_views = null;
+    $corriere_topic_totalViews_link = null;
+    $current_date_link = null;
+    $source_link = null;
+    $coronaVirus_Total_confirmed_link = null;
+    $cicciolina_altezza = null;
+    $cicciolina_altezza_link = null;
+    $ansa_news = null;
+    $getDataFrom = null;
+    $getDataTo = null;
+    $classifica_dischi_italiani = null;
+    $metal_price_current = null;
+    $$metal_price_current_link= null;
+
+    foreach ($ciccio as $chiave => $responseItem) {
+
+        if ($responseItem->from == 'getDZero') {
+
+            $total_population = $responseItem->values->total_population[0][0];
+            $current_date = $responseItem->values->current_time[0][0];
+            $current_topic = $responseItem->values->corriere_primaPosClassifica_title[0][0];
+            $corriere_topic_totalViews = $responseItem->values->corriere_primaPosClassifica_totView[0][0];
+            $coronaVirus_Total_confirmed = $responseItem->values->coronaVirus_Total_confirmed[0][0];
+            $last_comment = $responseItem->values->comment_this[0][0];
+            $cicciolina_altezza = $responseItem->values->cicciolina_altezza[0][0];
+            $ansa_news = $responseItem->values->ansa_news[0][0];
+            if ($ansa_news==null ) $ansa_news = "--not defined--";
+
+            $classifica_dischi_italiani = $responseItem->values->classifica_dischi_italiani[0][0];
+            if ($classifica_dischi_italiani==null ) $classifica_dischi_italiani = "--not defined--";
+
+            $metal_price_current = $responseItem->values->gold_price[0][0];
+            if ($metal_price_current==null ) $metal_price_current = "--not defined--";
+
+        }
+
+        if ($responseItem->from == 'getAlarmsTotalView') {
+
+
+            $total_views = $responseItem->values->total_views[0][0];
+
+
+        }
+
+        if ($responseItem->from == 'getAlarms_current_time_link') {
+
+
+            $current_date_link = $responseItem->values->url[0][0];
+
+        }
+        if ($responseItem->from == 'getAlarms_source_json_total_population') {
+
+
+            $total_population_link = $responseItem->values->url[0][0];
+
+        }
+        if ($responseItem->from == 'getAlarms_source_json_corriere_primaPosClassifica_totView') {
+
+
+            $corriere_topic_totalViews_link = $responseItem->values->url[0][0];
+
+        }
+
+        if ($responseItem->from == 'getAlarms_source_json_coronaVirus_Total_confirmed') {
+
+
+            $coronaVirus_Total_confirmed_link = $responseItem->values->url[0][0];
+
+        }
+
+        if ($responseItem->from == 'getAlarms_source_json_gold_price') {
+
+
+            $metal_price_current_link = $responseItem->values->url[0][0];
+
+        }
+
+        if ($responseItem->from == 'getAlarms_source_json_cicciolina_altezza') {
+
+
+            $cicciolina_altezza_link = $responseItem->values->url[0][0];
+
+        }
+
+        if ($responseItem->from == 'getDataFrom') {
+
+
+            $getDataFrom = $responseItem->values[0][0];
+
+        }
+        if ($responseItem->from == 'getDataTo') {
+
+
+            $getDataTo = $responseItem->values[0][0];
+
+        }
+
+
+    }
+
+
+    $end = microtime(true);
+    $duration = $end - $start;
+
+    $data = <<<EOD
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello Work Report</title>
+    <link href="http://bit.ly/GPvP5H" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<h1>The Sibilla Report 1.0</h1>
+
+
+
+Hello world, <br>
+today is the <a href='$current_date_link'><b>$current_date</b></a>, see the hyperlink to json api!<br><br>
+
+
+The actual population is about <a href='$total_population_link'><b>$total_population</b></a> piglets. <br>
+Very congratulation! It is increasing! <br> <br>
+
+First topic in the general classifica is: '<a href='$corriere_topic_totalViews_link'><b>$current_topic</b></a>' <br>
+with more than <a href='$corriere_topic_totalViews_link'><b>$corriere_topic_totalViews</b></a> total views <br>
+
+<br>Gold is at <a href='$metal_price_current_link'><b>$metal_price_current</b></a> euro for oz. <br>
+
+
+<br>In the music hit parade is the title <b>$classifica_dischi_italiani</b> for now. <br>
+
+<br>Using an html source with xpath locator we have <a href='$cicciolina_altezza_link'><b>$cicciolina_altezza</b></a> for cicciolina height, last news from web is <b>$ansa_news</b><br>
+
+<br>The Coronavirus give yous <a href='$coronaVirus_Total_confirmed_link'<b>$coronaVirus_Total_confirmed</b></a> confirmed cases but we are working on the cure.<br>
+<br>Last comment on this article is: '<b>$last_comment</b>', <br>
+
+
+
+
+  
+ <br> Thank you and goodbye! Kiss!<br> 
+   <br><br> The duration of this request (response time) is approx: <b>$duration</b> seconds! 
+    <br>Update data are at  <b>$total_views</b>  . <br>
+     <br>Starting from  <b>$getDataFrom</b>  to  <b>$getDataTo</b>   . <br><br>
+
+EOD;
+    echo "$data";
+
+}
+
+
+?>
+
+<form method=”get”>
+    <div>
+        <br>
+        <legend>Please, write a short comment on this article...and press enter:</legend>
+        <div align="left"><input rows="5" cols="30" name="comment"></input>
+            <div>
+                <button type="submit" name="submit" value="send">send</button>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+

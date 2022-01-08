@@ -1,0 +1,3 @@
+imports:
+  - ./tests/Behat/behat.yml.dist_docker
+
