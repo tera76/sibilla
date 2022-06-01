@@ -5,21 +5,24 @@ if(isset($_GET['request'])) $data= $_GET['request'];
 
 if ($data == "") {
     $data = <<<EOD
-{
-        "request": [{
-        "name": "test",
-        "parameters": {
-        "email": "ciccio",
-        "password": "pass"
-        }
-        }, {
-        "name": "log",
-        "parameters": {
-        "email": "ciccio",
-        "password": "pass"
-        }
-        }]
-}
+    {
+        "request": [
+            {
+                "name": "login",
+                "parameters": {
+                    "email": "ciccio",
+                    "keyCode1": "1970"
+                }
+            },
+            {
+                "name": "sql",
+                "from": "todaytv",
+                "parameters": {
+                    "query": "select distinct data,value from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE()  order by timestamp desc) as h    "
+                }
+            }
+        ]
+    }
 EOD;
 }
 

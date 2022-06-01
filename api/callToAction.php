@@ -2,7 +2,7 @@
 
 include_once './testAction.php';
 include_once './identityAction.php';
-include_once './sqlAction.php';
+  include_once './sqlAction.php';
 include_once './loginAction.php';
 include_once './externalServiceGetAction.php';
 include_once './externalServiceGetCorriereFixedParamAction.php';
@@ -107,4 +107,3 @@ callToAction($action)
 
 
 }
-

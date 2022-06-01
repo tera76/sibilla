@@ -8,3 +8,9 @@ echo '<a href="../GoJS/samples/flowchart.html">gojs flowchart</a></br>';
 echo '<a href="goldPower.php">goldPower</a></br>';
 echo '<a href="cheDannoStasera.php">cheDannoStasera.php</a></br>';
 // echo '<a href="../GoJS/samples/network.html">gojs network</a></br>';
+
+echo '<br><strong>2 qubit entanglement</strong><br><br>';
+echo '<a href="test.php">test</a></br>';
+
+echo '<a href="curlFly_QuantumExp.php">curlFly_QuantumExp.php</a></br>';
+// echo '<a href="../GoJS/samples/network.html">gojs network</a></br>';

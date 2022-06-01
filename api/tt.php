@@ -2,6 +2,7 @@
 
 
 $doc = new DOMDocument();
-@$doc->loadHtmlFile('https://en.wikipedia.org/wiki/List_of_UFC_events');
+// $url=“https://https.programmitv.it/stasera.html”;
+@$doc->loadHtmlFile('https://https.programmitv.it/stasera.html');
 
 var_dump(@$doc);

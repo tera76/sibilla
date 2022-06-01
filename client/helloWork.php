@@ -12,7 +12,13 @@ if (isset($_GET['comment'])) {
 
    $data = <<<EOD
 {
-	"request": [
+	"request": [        {
+            "name": "login",
+            "parameters": {
+                "email": "ciccio",
+                "keyCode1": "1970"
+            }
+        },
 		{
 			"name": "getAlarmsDZero",
 			"parameters": {}
@@ -326,6 +332,9 @@ function helloWork($data)
 
 <h1>The Sibilla Report 2.1</h1>
 
+Update data at:
+<a href="http://localhost/sibilla/client/alarms.php">Visit /sibilla/client/cheDannoStasera.php!</a>
+
 
 
 Hello world, <br>
@@ -350,12 +359,9 @@ The kg Gold is at <a href='$metal_price_current_kg_link'><b>$metal_price_current
 <br>Last comment on this article is: '<b>$last_comment</b>', <br>
 
 <h2>Che Danno Stasera?</h2>
+Simulation:
+<a href="cheDannoStasera.php">Visit /sibilla/client/cheDannoStasera.php!</a>
 
-<br><b>$tv00</b>  : $tv01 <br>
-<br><b>$tv10</b>  : $tv11 <br>
-<br><b>$tv20</b>  : $tv21 <br>
-<br><b>$tv30</b>  : $tv31 <br>
-<br><b>$tv40</b>  : $tv41 <br>
 
  <br> Thank you and goodbye! Kiss!<br>
    <br><br> The duration of this request (response time) is approx: <b>$duration</b> seconds!
@@ -408,7 +414,13 @@ function saveComment($comment_to_post)
 
     $postdata = <<<EOD
 {
-	"request": [
+	"request": [        {
+            "name": "login",
+            "parameters": {
+                "email": "ciccio",
+                "keyCode1": "1970"
+            }
+        },
 		{
 			"name": "sql",
 			"parameters": {

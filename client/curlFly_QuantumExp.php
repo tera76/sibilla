@@ -10,40 +10,41 @@ $request = <<<EOD
 {
 	"request": {
 		"name": "TEST QE:",
-        "parameters": {
-            "url": "https://lab.quantum-computing.ibm.com/user/5ae869de0f020500393082e2/lab/tree/dicembre2021.ipynb",
-			"method": "GET",
-            "header": [
-						"content-type: text/html; charset=UTF-8",
-						"Connection: keep-alive",
-	"Cache-Control: max-age=0",
-	"Upgrade-Insecure-Requests: 1",
-	"User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36",
-	"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-	"Accept-Encoding: gzip, deflate"],
-		"data": {}
+		"parameters": {
+			"url": "https://quantum-computing.ibm.com/api/graphql/",
+			"method": "POST",
+			"header": [
+				"Content-Type: application/json"
+			],
+			"data": {
+				"query": "query runSimulator(\$qasm: String!, \$seed: Int, \$shots: Int) {  runSimulator(qasm: \$qasm, seed: \$seed, shots: \$shots) {    statevector    counts {      state      count    }  }}",
+				"variables": {
+					"qasm": "OPENQASM 2.0;include \"qelib1.inc\";qreg q[2];creg c[2];reset q[0];reset q[1];rx(pi*1/(3-1)) q[0];cx q[0],q[1];measure q[0] -> c[0];measure q[1] -> c[1];",
+					"seed": 32,
+					"shots": 1024
+				}
+			}
 		}
 	}
 }
 EOD;
 
 
-for ($i=0; $i < 1; $i++) {
-	// code...
-
-
 $dataToArray = json_decode($request);
+
 $title = $dataToArray->request->name;
 printTitle($title);
 
 $testCallresponseJsonAndCode = arrayFromCurl($dataToArray->request->parameters);
-$testCallresponse = $testCallresponseJsonAndCode['responseJson'];;
+
+$testCallresponse = $testCallresponseJsonAndCode['responseJson'];
+
 $testCallresponseCode = $testCallresponseJsonAndCode['responseCode'];
 
 
 printErrorCode($testCallresponseCode);
-printStepMessage("response from GET content in json", substr(json_encode($testCallresponse, JSON_PRETTY_PRINT), 0, 1250));
-}
+printStepMessage("response in json", substr(json_encode($testCallresponse, JSON_PRETTY_PRINT), 0, 1250));
+
 
 
 /*
@@ -62,7 +63,7 @@ die();
  */
 
 
-function printTitle($title)
+	function printTitle($title)
 {
 
 
@@ -86,7 +87,7 @@ function printStepMessage($step, $value)
 
 }
 
-function arrayFromCurl($input)
+		function arrayFromCurl($input)
 {
 
 	$url = $input->url;
