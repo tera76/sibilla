@@ -25,9 +25,10 @@ use my_andreamatera;
 
 */
 error_reporting(0);
-$tvQueryAll  =      "select distinct data,value from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE()  order by timestamp desc) as h    ";
-$tvQueryPreferred = "select distinct data,value from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE()  order by timestamp desc) as h  join syb_tv_preferred as p where  instr(lower(value),lower(p.`keys`)) ";
+$tvQueryAll  =      "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ";
+$tvQueryPreferred = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join  (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  (select `keys` from syb_tv_preferred ) as p where h.id = d.id and  instr(lower(value),lower(p.`keys`))";
 $tvQueryFilter =  "select id, `keys` FROM syb_tv_preferred";
+
 
 $data = <<<EOD
 {
@@ -113,7 +114,7 @@ $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 
 echo "<h2>Filter: </h2>";
 $testCallresponse = todayInTv($data);
-var_dump($testCallresponse);
+
 die();
 /*
  *  Terminate suite
