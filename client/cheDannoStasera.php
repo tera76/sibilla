@@ -26,8 +26,10 @@ use my_andreamatera;
 */
 error_reporting(0);
 $tvQueryAll  =      "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ";
-$tvQueryPreferred = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join  (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  (select `keys` from syb_tv_preferred ) as p where h.id = d.id and  instr(lower(value),lower(p.`keys`))";
-$tvQueryFilter =  "select id, `keys` FROM syb_tv_preferred";
+$tvQueryFilterPreferred =  "select id, `keys` FROM syb_tv_preferred";
+$tvQueryFilterNotPreferred =  "select id, `keys` FROM syb_tv_notPreferred";
+$tvQueryPreferred = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  ($tvQueryFilterPreferred) as p join ($tvQueryFilterNotPreferred ) as np where h.id = d.id and instr(lower(value),lower(p.`keys`) ) > 0  and instr(lower(value),lower(np.`keys`) ) <=0";
+
 
 
 $data = <<<EOD
@@ -44,12 +46,20 @@ $data = <<<EOD
 		"parameters": {
 		"query": "$tvQueryPreferred"
 		}
+	},
+	{
+		"name": "sql",
+		"from": "getDataTo",
+		"parameters": {
+			"query": "select timestamp from syb_alarms_history order by id desc limit 1 "
+		}
 	}]
 }
 EOD;
 
 $dataToarray = json_decode($data);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
+echo "<h1>Che danno stasera! </h1>";
 
 echo "<h2>Scelto per te: </h2>";
 $testCallresponse = todayInTv($data);
@@ -88,7 +98,7 @@ $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 echo "<h2>Tutti i canali: </h2>";
 $testCallresponse = todayInTv($data);
 
-// lista Query
+// lista Query filter
 
 $data_query= <<<EOD
 {
@@ -102,7 +112,34 @@ $data_query= <<<EOD
 		"name": "sql",
 		"from": "todaytv",
 		"parameters": {
-		"query": "$tvQueryFilter"
+		"query": "$tvQueryFilterPreferred"
+		}
+	}]
+}
+EOD;
+
+$dataToarray = json_decode($data_query);
+$data = json_encode($dataToarray, JSON_PRETTY_PRINT);
+
+echo "<h2>Filter: </h2>";
+$testCallresponse = todayInTv($data);
+
+
+// lista Query notfilter
+
+$data_query= <<<EOD
+{
+	"request": [        {
+            "name": "login",
+            "parameters": {
+                "email": "ciccio",
+                "keyCode1": "1970"
+            }
+        },{
+		"name": "sql",
+		"from": "todaytv",
+		"parameters": {
+		"query": "$tvQueryFilterNotPreferred"
 		}
 	}]
 }
@@ -112,8 +149,9 @@ $dataToarray = json_decode($data_query);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 
 
-echo "<h2>Filter: </h2>";
+echo "<h2>Filter not preferred (experimental): </h2>";
 $testCallresponse = todayInTv($data);
+
 
 die();
 /*
@@ -176,22 +214,35 @@ function todayInTv($data)
     $ciccio = $response->response;
     $starting_data = null;
     $tv = null;
-    echo "<h3>Che Danno Stasera?</h3>";
+//    echo "<h3>Che Danno Stasera?</h3>";
 
 foreach ($ciccio as $chiave => $responseItem) {
+	if ($responseItem->from == 'getDataTo') {
 
+
+			$getDataTo = $responseItem->values[0][0];
+			echo "data are stored to: " . $getDataTo;
+
+
+	}
     if ($responseItem->from == 'todaytv') {
 
 
-			echo("Alarms, current data: <br>");
+
+	//		echo("Alarms, current data: <br>");
 			$data = $responseItem->values;
+
+echo "<table>";
+
 			foreach ($data as $key => $value){
 			//     var_dump($value[0][0]);
 					$channel = $value[0];
 					$program = $value[1];
-					echo "<br>" . "<b>	$channel</b> play: $program"  ;
-			}
-
+						echo "<tr><td><b>$channel :</b></td><td>$program</td></tr>"  ;
+			//		echo "<br>" . "<span><b>	$channel</b> play:" . "\t" .$program .<span>""  ;
+      //    echo "<br><strong>" . $channel . "aa \t\t\t\t\t\t" . ":  </strong>" . "\t\t\t" . $program . "\t";
+					}
+echo "</table>";
     }
 
 

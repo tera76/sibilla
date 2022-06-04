@@ -3,14 +3,9 @@
 error_reporting(0);
 
 // $tvQuery  = "select data,value from (select  timestamp, data,value  from syb_alarms_history WHERE data like `staseraInTv%` and DATE(`timestamp`) = CURDATE() GROUP BY data  ORDER BY  max(timestamp) desc ) as h ,  syb_tv_preferred as p where  instr(lower(value),lower(p.`keys`)) limit 5";
-$tvQuery  = "select distinct data,value from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) = CURDATE()  order by timestamp desc) as h  join syb_tv_preferred as p where  instr(lower(value),lower(p.`keys`)) limit 5";
-//  "select distinct data,value from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) = CURDATE()  order by timestamp desc limit 19) as h  join syb_tv_preferred as p where  instr(lower(value),lower(p.`keys`)) limit 5";
-/*
-if (isset($_GET['comment'])) {
-    $input_comment = $_GET['comment'];
-//    $input_comment = $_GET['comment']; */
+$tvQuery  = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join  (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  (select `keys` from syb_tv_preferred ) as p where h.id = d.id and  instr(lower(value),lower(p.`keys`))";
 
-   $data = <<<EOD
+$data = <<<EOD
 {
 	"request": [        {
             "name": "login",
@@ -331,9 +326,6 @@ function helloWork($data)
 <body>
 
 <h1>The Sibilla Report 2.1</h1>
-
-Update data at:
-<a href="http://localhost/sibilla/client/alarms.php">Visit /sibilla/client/cheDannoStasera.php!</a>
 
 
 

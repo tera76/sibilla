@@ -109,7 +109,10 @@ foreach ($counts as $food)
 $q0_perc = 100 * $q0 / $shots;
 $q1_perc = 100 * $q1 / $shots;
 printStepMessage("<br>Alice, q0 conta 1 quante volte? in perc. ", $q0_perc . " %");
+
+
 printStepMessage("Bob, q1 conta 1 quante volte? in perc. ", $q1_perc . " %");
+
 /*
 printStepMessage("Single measure?", "spettro, distribuzione, no sequenza?");
 
@@ -156,6 +159,7 @@ function getSingleShot($curl)
 
         printStepMessage(" Alice Single Observation: <big style=\"color:Tomato;\">" . $state[0] . "</big>", "");
         printStepMessage(" Bob Single Observation: <big style=\"color:Tomato;\">" . $state[1] . "</big>", "");
+
     }
 }
 
