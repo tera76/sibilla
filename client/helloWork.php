@@ -355,6 +355,12 @@ Simulation:
 <a href="cheDannoStasera.php">Visit /sibilla/client/cheDannoStasera.php!</a>
 
 
+<h2>Che Succede?</h2>
+Simulation:
+<a href="cheSuccede.php">Visit /sibilla/client/cheSuccede.php!</a>
+
+
+
  <br> Thank you and goodbye! Kiss!<br>
    <br><br> The duration of this request (response time) is approx: <b>$duration</b> seconds!
     <br>Update data are at  <b>$total_views</b>  steps. <br>

@@ -7,6 +7,7 @@ echo '<a href="../GoJS/samples/kanban.html">gojs kanban</a></br>';
 echo '<a href="../GoJS/samples/flowchart.html">gojs flowchart</a></br>';
 echo '<a href="goldPower.php">goldPower</a></br>';
 echo '<a href="cheDannoStasera.php">cheDannoStasera.php</a></br>';
+echo '<a href="cheSuccede.php">cheSuccede.php</a></br>';
 // echo '<a href="../GoJS/samples/network.html">gojs network</a></br>';
 
 echo '<br><strong>2 qubit entanglement</strong><br><br>';
