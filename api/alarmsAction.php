@@ -1,5 +1,5 @@
 <?php
-
+include_once './getQueryFilmImage.php';
 class alarmsAction
 {
 
@@ -32,6 +32,8 @@ class alarmsAction
 
 
     }
+
+
 
 
     function getAlarmsDZero()
@@ -161,6 +163,15 @@ class alarmsAction
 
                 if ($locatorType == '' || $locatorType == 'json') {
                     //    var_dump("*******************************" . $locatorType);
+
+                    $is_Imagelink= preg_match('/_image_link/', $name);
+                    if($is_Imagelink) {
+ // $url="https://www.googleapis.com/customsearch/v1?key=AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo&q=ciccio&cx=02c284d1e5e214401&limit=1&totalResults=1";
+                 $query = getQueryFilmImage($name);
+          //  $query="via%20col%20vento";
+                  $url = preg_replace('/__QUERYFILM__/', "$query", $url);
+                    }
+
                     $internalAction = <<<EOD
                     {
                     	"parameters": {
@@ -194,7 +205,7 @@ EOD;
 EOD;
 
 
-   
+
                     $internalAction_decoded = json_decode($internalAction, true);
 
                     $externalServiceGetAction = externalPageGetAction($internalAction_decoded);

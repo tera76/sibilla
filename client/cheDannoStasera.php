@@ -1,7 +1,11 @@
 <?php
 
+$start = microtime(true);
 
 
+// <img src=\"url\" alt=\"https://pad.mymovies.it/filmclub/2006/03/421/locandina.jpg\">";
+
+//die();
 // Turn off all error reporting
 /*
 
@@ -25,10 +29,10 @@ use my_andreamatera;
 
 */
 error_reporting(0);
-$tvQueryAll  =      "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ";
+$tvQueryAll  =      "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and data not like '%_image_link' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ";
 $tvQueryFilterPreferred =  "select id, `keys` FROM syb_tv_preferred";
 $tvQueryFilterNotPreferred =  "select id, `keys` FROM syb_tv_notPreferred";
-$tvQueryPreferred = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  ($tvQueryFilterPreferred) as p join ($tvQueryFilterNotPreferred ) as np where h.id = d.id and instr(lower(value),lower(p.`keys`) ) > 0  and instr(lower(value),lower(np.`keys`) ) <=0";
+$tvQueryPreferred = "select * from ( select distinct h.data, h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and data not like '%_image_link'and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_preferred ) as p where h.id = d.id and instr(lower(h.value),lower(p.`keys`) ) > 0 ) as aaa where value not in ( select h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_notPreferred ) as np where h.id = d.id and instr(lower(h.value),lower(np.`keys`) ) > 0 ) ";
 
 
 
@@ -153,7 +157,6 @@ echo "<h2>Filter not preferred (experimental): </h2>";
 $testCallresponse = todayInTv($data);
 
 
-die();
 /*
  *  Terminate suite
  */
@@ -173,7 +176,6 @@ die();
 
 function todayInTv($data)
 {
-    $start = microtime(true);
 
 
 
@@ -231,8 +233,10 @@ foreach ($ciccio as $chiave => $responseItem) {
 
 	//		echo("Alarms, current data: <br>");
 			$data = $responseItem->values;
+			echo "<head><style>table, th, td {border: 1px solid black;}</style></head>";
+			echo "<table style=\"width:100%\">";
 
-echo "<table>";
+echo "<tr><th style=\"width:30%\">channel</th><th>titlr</th></tr>";
 
 			foreach ($data as $key => $value){
 			//     var_dump($value[0][0]);
