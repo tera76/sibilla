@@ -4,6 +4,7 @@ include_once './logAction.php';
 include_once './loginAction.php';
 include_once './checkAccessToken.php';
 
+
 $GLOBALS['babboDiMinchia']['response'] = array();
 
 $input_json = file_get_contents('php://input'); //($_POST doesn't work here)
@@ -17,7 +18,7 @@ $headers_tolower = array_change_key_case($headers, CASE_LOWER);
 if(isset($headers_tolower['access_token'])) {
 
 $access_token = $headers_tolower['access_token'];
-
+ 
 
 checkAccessToken($access_token);
 }

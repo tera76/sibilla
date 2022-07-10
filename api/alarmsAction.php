@@ -162,14 +162,19 @@ class alarmsAction
             if ($locator != 'localAction') {
 
                 if ($locatorType == '' || $locatorType == 'json') {
-                    //    var_dump("*******************************" . $locatorType);
+                      // var_dump("*******************************" . $locatorType);
 
                     $is_Imagelink= preg_match('/_image_link/', $name);
                     if($is_Imagelink) {
+
  // $url="https://www.googleapis.com/customsearch/v1?key=AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo&q=ciccio&cx=02c284d1e5e214401&limit=1&totalResults=1";
                  $query = getQueryFilmImage($name);
           //  $query="via%20col%20vento";
-                  $url = preg_replace('/__QUERYFILM__/', "$query", $url);
+                  $url = preg_replace('/__QUERYFILM__/', $query, $url);
+                  $token1 = "AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo";
+                  $token2= "AIzaSyCqQ4gssseK6C2NlhapDw_iOfNHBV_50E0";
+                  $url = preg_replace('/__GOOGLEAPITOKEN__/', $token1, $url);
+
                     }
 
                     $internalAction = <<<EOD
