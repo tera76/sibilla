@@ -28,11 +28,8 @@ use my_andreamatera;
 
 */
 error_reporting(0);
-$tvQueryAll =
-    "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%'  and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ";
 
-
-$tvQueryAllWithImages = "select cf.data,cf.value, (select  value as link from syb_alarms_history where data like concat(cf.data,'%_image_link') and value !='' order by id desc limit 1 ) as image_link from (select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and data not like '%_image_link' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ) as cf";
+$tvQueryAllWithImages = "select cf.data,cf.value, (select  value as link from syb_alarms_history where data = concat(cf.data,'_image_link') and value !='' order by id desc limit 1 ) as image_link from (select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and data not like '%_image_link' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ) as cf";
 
 
 
@@ -44,8 +41,6 @@ $tvQueryFilterPreferred = "select id, `keys` FROM syb_tv_preferred";
 
 
 $tvQueryFilterNotPreferred = "select id, `keys` FROM syb_tv_notPreferred";
-$tvQueryPreferred =
-    "select * from ( select distinct h.data, h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_preferred ) as p where h.id = d.id and instr(lower(h.value),lower(p.`keys`) ) > 0 ) as aaa where value not in ( select h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_notPreferred ) as np where h.id = d.id and instr(lower(h.value),lower(np.`keys`) ) > 0 ) ";
 
 
 
@@ -239,7 +234,7 @@ function todayInTv($data)
                 echo "<tr>";
 
 
-                    echo "<td><b>$channel</b></td><td>$program</td><td><img src=\"$link_image\" width=100</td>";
+                    echo "<td><b>$channel</b></td><td>$program</td><td><a href=\"$link_image\"><img src=\"$link_image\" width=100</td>";
 
 
                 //		echo "<br>" . "<span><b>	$channel</b> play:" . "\t" .$program .<span>""  ;

@@ -5,6 +5,7 @@ require __DIR__ . '/conf/environment.conf.php';
 function sql($action)
 {
 
+
     // Reporting E_NOTICE can be good too (to report uninitialized
 // variables or catch variable name misspellings ...)
     error_reporting(E_ERROR);
@@ -41,9 +42,3 @@ function sql($action)
     return $data;
 
 }
-
-
-
-
-
-

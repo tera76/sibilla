@@ -128,13 +128,17 @@ foreach ($ciccio as $chiave => $responseItem) {
 	//		echo("Alarms, current data: <br>");
 			$data = $responseItem->values;
 
-echo "<table>";
+			echo "<head><style>table, th, td {border: 1px solid black;}</style></head>";
+			echo "<table style=\"width:100%\">";
+
+			echo "<tr><th style=\"width:30%\">source</th><th>title</th></tr>";
+
 
 			foreach ($data as $key => $value){
 			//     var_dump($value[0][0]);
 					$channel = $value[0];
 					$program = $value[1];
-						echo "<tr><td><b>$channel :</b></td><td>$program</td></tr>"  ;
+						echo "<tr><td><b>$channel </b></td><td>$program</td></tr>"  ;
 			//		echo "<br>" . "<span><b>	$channel</b> play:" . "\t" .$program .<span>""  ;
       //    echo "<br><strong>" . $channel . "aa \t\t\t\t\t\t" . ":  </strong>" . "\t\t\t" . $program . "\t";
 					}
