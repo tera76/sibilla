@@ -1,62 +1,68 @@
 <?php
 
+include_once './sqlAction.php';
 
-/*
-$name="staseraInTv18_rai1_image_link";
+$debug= false;
+if($debug){
+$name="staseraInTv18_la7D_image_link";
 $string= getQueryFilmImage($name);
 
 print_r($string);
 
-
 die();
-*/
+}
 
 function getQueryFilmImage($name)
 {
+
+
+
 $channel =   preg_split("/_image_link/", $name);
+
+
+
      // $GLOBALS['babboDiMinchia'] .= '"":""}},';
 $tvQueryByText  = "select value from syb_alarms_history   WHERE `data` = '$channel[0]' order by id desc limit 1";
 
 
-$data = <<<EOD
-{
-	"request": [        {
-            "name": "login",
-            "parameters": {
-                "email": "ciccio",
-                "keyCode1": "1970"
-            }
-        },{
-		"name": "sql",
-		"from": "tvQueryByText",
-		"parameters": {
-		"query": "$tvQueryByText"
-		}
-	}]
-}
-EOD;
+  $internalAction['parameters']['query'] = $tvQueryByText;
 
-$dataToarray = json_decode($data);
-$data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 
-$testCallresponse = queryStringFormatted($data);
+$testCallresponse = sql($internalAction)[0][0];
 //  return $testCallresponse;
+$testCallresponse1= $testCallresponse;
+// $testCallresponse1=  substr($testCallresponse, 0, 200);
+//$testCallresponse2 = preg_replace('/\s\s+/', '',   $testCallresponse1);
+$testCallresponse2 = preg_replace('/([0-9]|0[0-9]|1[0-9]|2[0-3]).[0-5][0-9]/', '',   $testCallresponse1);
 
-$keywords = (array) null;
-$keywords = preg_split("/[\s,]+/",  $testCallresponse);
+$testCallresponse3 = preg_replace('/"/',' ', $testCallresponse2);
 
-$ret= $keywords[1] . "%20" . $keywords[2] . "%20" . $keywords[3] . "%20" . $keywords[4] . "%20tv" ;
+$testCallresponse4 = preg_replace('/\'/'," ", $testCallresponse3);
 
+ $testCallresponse5=  substr($testCallresponse4, 0, 90);
 
+//  $testCallresponse2 = preg_replace('/ /','%20', $testCallresponse1);
 
-
+  //$testCallresponse3 = preg_split("/[\s,]+/",  $testCallresponse1);
+  //$testCallresponse2 = preg_replace('/\s\s+/', '',   $testCallresponse1);
+  //$keywords = $testCallresponse3;
+ // var_dump($testCallresponse);
+ // var_dump($keywords[0]);
+//  var_dump(urlencode($testCallresponse));
+// $ret=urlencode($testCallresponse);
+  // $ret= $keywords[0] . "%20" . $keywords[1] . "%20" . $keywords[2] . "%20" . $keywords[3] . "%20" . $keywords[4] . "%20" . $keywords[5] . "%20tv" ;
+$ret =urlencode($testCallresponse5);
+// $testCallresponse3 = preg_replace('/ /','%20', $testCallresponse2);
+// $ret=$testCallresponse2;
+//  var_dump($ret);
+//  die();
     return $ret;
 
 
 }
 
 
-
+/*
 
 function queryStringFormatted($data)
 {
@@ -107,3 +113,4 @@ function queryStringFormatted($data)
 
 
 }
+*/
