@@ -2,12 +2,8 @@
 
 $debug= false;
 if($debug){
-$action["parameters"]["externalUrl"]="https://www.googleapis.com/customsearch/v1?key=AIzaSyCqQ4gssseK6C2NlhapDw_iOfNHBV_50E0&cx=02c284d1e5e214401&limit=1&totalResults=1&q=++Grey%E2%80%99s+Anatomy++4+episodi++%28TELEFILM%29%0A++++++++Drammatico-ospedalie";
-$action["parameters"]["get"]["key"]="staseraInTv18_la7D_image_link";
-// $action["parameters"]["get"]["value"]="items[?(@.pagemap.cse_image !=    '')]";
-$action["parameters"]["get"]["value"]="items.0.pagemap.cse_image.0.src";
-$string= externalServiceGetAction($action);
-  var_dump($string);
+
+  var_dump("ciccio");
 die();
 }
 
