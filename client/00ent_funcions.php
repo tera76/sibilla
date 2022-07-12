@@ -113,6 +113,8 @@ printStepMessage("<br>Alice, q0 conta 1 quante volte? in perc. ", $q0_perc . " %
 
 printStepMessage("Bob, q1 conta 1 quante volte? in perc. ", $q1_perc . " %");
 
+
+
 /*
 printStepMessage("Single measure?", "spettro, distribuzione, no sequenza?");
 

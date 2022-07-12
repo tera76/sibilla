@@ -1,5 +1,6 @@
 <?php
 
+
 $data = null;
 if(isset($_GET['request'])) $data= $_GET['request'];
 
@@ -11,14 +12,7 @@ if ($data == "") {
                 "name": "login",
                 "parameters": {
                     "email": "ciccio",
-                    "keyCode1": "1970"
-                }
-            },
-            {
-                "name": "sql",
-                "from": "todaytv",
-                "parameters": {
-                    "query": "select distinct data,value from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE()  order by timestamp desc) as h    "
+                    "keyCode1": "diagrammsPersistence1976"
                 }
             }
         ]
@@ -30,6 +24,9 @@ $dataToarray = json_decode($data);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 
 // $data = $_POST['request'];
+
+
+
 
 $testCallresponse = testCall($data);
 
@@ -56,7 +53,7 @@ function testCall($data)
         array(
             'method' => 'POST',
             'header' => ["content-type: application/json",
-            "access_token: bearer 1970"
+            "access_token__: bearer 1970"
           ],
             'content' => $postdata
         )
@@ -70,12 +67,14 @@ function testCall($data)
     // $url = "https://pasteurian-visitors.000webhostapp.com/sibilla/api/post.php";
     $url = apiEntryPoint;
 
-
     $context = stream_context_create($opts);
+
+
 
     $start = microtime(true);
     $response = file_get_contents($url, false, $context);
     $end = microtime(true);
+    var_dump($response);
 
     $duration = $end - $start;
     $output = "";

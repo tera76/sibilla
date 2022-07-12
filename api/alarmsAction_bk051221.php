@@ -167,6 +167,7 @@ class alarmsAction
                     $internalAction .= '"get": {';
                     $internalAction .= '"' . $name . '": "' . $locator . '"}}}';
 
+
                     $internalAction_decoded = json_decode($internalAction, true);
 
                     $externalServiceGetAction = externalServiceGetAction($internalAction_decoded);

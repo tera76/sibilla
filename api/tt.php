@@ -1,8 +1,7 @@
+
+
+
 <?php
-
-
-$doc = new DOMDocument();
-// $url=“https://https.programmitv.it/stasera.html”;
-@$doc->loadHtmlFile('https://https.programmitv.it/stasera.html');
-
-var_dump(@$doc);
+$homepage = file_get_contents('http://tera.altervista.org/sibilla/api/post.php');
+echo $homepage;
+?>

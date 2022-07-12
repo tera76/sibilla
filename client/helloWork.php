@@ -352,7 +352,7 @@ The kg Gold is at <a href='$metal_price_current_kg_link'><b>$metal_price_current
 
 <h2>Che Danno Stasera?</h2>
 Simulation:
-<a href="cheDannoStasera.php">Visit /sibilla/client/cheDannoStasera.php!</a>
+<a href="cheDannoStasera_images.php">Visit /sibilla/client/cheDannoStasera_images.php!</a>
 
 
 <h2>Che Succede?</h2>
