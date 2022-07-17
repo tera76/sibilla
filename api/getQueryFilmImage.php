@@ -2,9 +2,9 @@
 
 include_once './sqlAction.php';
 
-$debug= false;
+$debug= false ;
 if($debug){
-$name="staseraInTv18_la7D_image_link";
+$name="staseraInTv18_venti_image_link";
 $string= getQueryFilmImage($name);
 
 print_r($string);
@@ -39,7 +39,7 @@ $testCallresponse3 = preg_replace('/"/',' ', $testCallresponse2);
 
 $testCallresponse4 = preg_replace('/\'/'," ", $testCallresponse3);
 
- $testCallresponse5=  substr($testCallresponse4, 0, 90);
+ $testCallresponse5=  substr($testCallresponse4, 0, 60);
 
 //  $testCallresponse2 = preg_replace('/ /','%20', $testCallresponse1);
 

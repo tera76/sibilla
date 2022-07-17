@@ -224,6 +224,7 @@ foreach ($ciccio as $chiave => $responseItem) {
 
 			$getDataTo = $responseItem->values[0][0];
 			echo "data are stored to: " . $getDataTo;
+			echo "<br>data will be updated at 16:00 Rome locatio";
 
 
 	}
