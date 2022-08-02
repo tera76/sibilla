@@ -14,7 +14,7 @@ echo '<a href="cheSuccede.php">cheSuccede.php</a></br>';
 // echo '<a href="../GoJS/samples/network.html">gojs network</a></br>';
 
 echo '<br><strong>2 qubit entanglement</strong><br><br>';
-echo '<a href="0000input_output.php?q0state=1&q1state=0&q1state=0&q0rot=0">input output </a></br>';
+echo '<a href="http://localhost/sibilla/client/0000input_output.php?q0state=1&q0nstates=3&q1state=0&q1nstates=3&q0rot=0">input output </a></br>';
 
 echo '<a href="curlFly_QuantumExp.php">curlFly_QuantumExp.php</a></br>';
 // echo '<a href="../GoJS/samples/network.html">gojs network</a></br>';
