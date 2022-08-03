@@ -36,15 +36,18 @@ else {
     $q0rot = 0;
 }
 
+if (isset($_GET['shots'])) $shots =  intval($_GET['shots']);
+else {
+    $shots = 1000;
+}
 
 
-$shots=1024;
 
 echo "<br> q0state: "  . $q0state ;
-echo "<br> q0nstates" . $q0nstates ;
+echo "<br> q0nstates: " . $q0nstates ;
 echo "<br>";
 echo "<br> q1state: "  . $q1state ;
-echo "<br> q1nstates" . $q1nstates ;
+echo "<br> q1nstates: " . $q1nstates ;
 echo "<br>";
 echo "<br> q0rot: "  . $q0rot ;
 echo "<br>";
@@ -115,7 +118,5 @@ echo "<br> input ";
 getMeasuresV2($qasm_input,$shots);
 
 echo "<br> output ";
+printf( $qasm);
 getMeasuresV2($qasm,$shots);
-
-
- die();
