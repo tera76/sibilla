@@ -91,6 +91,27 @@ callToAction($action)
             $curl = new  curlAction();
             $curl->getResponseJson($action);
             break;
+        case "tvQueryPreferredWithImages":
+        $tvQueryPreferredWithImages_query  =     "select
+CONCAT( SUBSTRING_INDEX(SUBSTRING_INDEX(cf.data, '_', 2), '_', -1) , ' - ',
+SUBSTRING_INDEX(SUBSTRING_INDEX(cf.data, '_', 4), '_', -1) ) as data, cf.value, (select  value as link from syb_alarms_history where data like concat(cf.data,'%_image_link') and value !='' order by id desc limit 1 ) as image_link from (select * from ( select distinct h.data, h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and data not like '%_image_link' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_preferred ) as p where h.id = d.id and instr(lower(h.value),lower(p.`keys`) ) > 0 ) as aaa where value not in ( select h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_notPreferred ) as np where h.id = d.id and instr(lower(h.value),lower(np.`keys`) ) > 0 ) ) as cf ";
+
+$action["parameters"]["query"] = $tvQueryPreferredWithImages_query;
+            sql($action);
+            break;
+
+        case "tvQueryWithImages":
+        $tvQueryWithImages_query = "select
+CONCAT( SUBSTRING_INDEX(SUBSTRING_INDEX(cf.data, '_', 2), '_', -1) , ' - ',
+SUBSTRING_INDEX(SUBSTRING_INDEX(cf.data, '_', 4), '_', -1) ) as data,
+cf.value, (select  value as link from syb_alarms_history where data = concat(cf.data,'_image_link') and value !='' order by id desc limit 1 ) as image_link from (select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and data not like '%_image_link' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ) as cf ORDER by cf.data asc";
+
+        $action["parameters"]["query"] = $tvQueryWithImages_query;
+
+                sql($action);
+                break;
+
+
         default:
 
             # general logging

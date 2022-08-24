@@ -102,11 +102,20 @@ $url = apiEntryPoint;
         if ($responseItem->from == 'getDZero') {
             echo("Alarms, current data; <br>");
             $data = $responseItem->values;
+
+            echo "<head><style>table, th, td {border: 1px solid black;}</style></head>";
+      			echo "<table style=\"width:100%\">";
+            echo "<tr><th style=\"width:30%\">key</th><th>value</th></tr>";
+
+
             foreach ($data as $key => $value){
             //     var_dump($value[0][0]);
                 $derivataZero = $value[0][0];
-                echo "<br>" . "<b>$key</b> is at $derivataZero"  ;
+                // echo "<br>" . "<b>$key</b> is at $derivataZero"  ;
+                echo "<tr><td><b>$key :</b></td><td>$derivataZero</td></tr>"  ;
+
             }
+            echo "</table>";
 
 
         }

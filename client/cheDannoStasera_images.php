@@ -29,7 +29,7 @@ use my_andreamatera;
 */
 error_reporting(0);
 
-$tvQueryAllWithImages = "select cf.data,cf.value, (select  value as link from syb_alarms_history where data = concat(cf.data,'_image_link') and value !='' order by id desc limit 1 ) as image_link from (select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and data not like '%_image_link' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ) as cf";
+// $tvQueryAllWithImages = "select cf.data,cf.value, (select  value as link from syb_alarms_history where data = concat(cf.data,'_image_link') and value !='' order by id desc limit 1 ) as image_link from (select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and data not like '%_image_link' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d where h.id = d.id ) as cf";
 
 
 
@@ -45,11 +45,12 @@ $tvQueryFilterNotPreferred = "select id, `keys` FROM syb_tv_notPreferred";
 
 
 
-    $tvQueryPreferredWithImages =
-        "select cf.data,cf.value, (select  value as link from syb_alarms_history where data like concat(cf.data,'%_image_link') and value !='' order by id desc limit 1 ) as image_link from (select * from ( select distinct h.data, h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and data not like '%_image_link' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_preferred ) as p where h.id = d.id and instr(lower(h.value),lower(p.`keys`) ) > 0 ) as aaa where value not in ( select h.value from (select * from syb_alarms_history where data like 'staseraInTv%' and DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h join (select id, data from (select max(id) as id, max(timestamp) , max(data) as data from syb_alarms_history where data like 'staseraInTv%' GROUP by data ) as h ) as d join (select `keys` from syb_tv_notPreferred ) as np where h.id = d.id and instr(lower(h.value),lower(np.`keys`) ) > 0 ) ) as cf";
 
 
-$tvQueryImages = $data = <<<EOD
+echo "<h1>Che danno stasera! </h1>";
+
+echo "<h2>Scelto per te: </h2>";
+$tvQueryPreferredWithImages = <<<EOD
 {
 	"request": [        {
             "name": "login",
@@ -58,30 +59,30 @@ $tvQueryImages = $data = <<<EOD
                 "keyCode1": "1970"
             }
         },{
-		"name": "sql",
-		"from": "todaytv",
-		"parameters": {
-		"query": "$tvQueryPreferredWithImages"
-		}
+		"name": "tvQueryPreferredWithImages",
+		"from": "tvQueryPreferredWithImages"
 	},
 	{
 		"name": "sql",
 		"from": "getDataTo",
 		"parameters": {
 			"query": "select timestamp from syb_alarms_history order by id desc limit 1 "
-		}
-	}]
+    }
+		}]
 }
 EOD;
 
-$dataToarray = json_decode($data);
+$dataToarray = json_decode($tvQueryPreferredWithImages);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
-echo "<h1>Che danno stasera! </h1>";
 
-echo "<h2>Scelto per te: </h2>";
 $testCallresponse = todayInTv($data);
 
-$data_preferred = <<<EOD
+
+
+
+echo "<h2>Tutti i canali: </h2>";
+
+$tvQueryImages  = <<<EOD
 {
 	"request": [        {
             "name": "login",
@@ -90,19 +91,14 @@ $data_preferred = <<<EOD
                 "keyCode1": "1970"
             }
         },{
-		"name": "sql",
-		"from": "todaytv",
-		"parameters": {
-		"query": "$tvQueryAllWithImages"
-		}
+		"name": "tvQueryWithImages",
+		"from": "tvQueryWithImages"
 	}]
 }
 EOD;
 
-$dataToarray = json_decode($data_preferred);
+$dataToarray = json_decode($tvQueryImages);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
-
-echo "<h2>Tutti i canali: </h2>";
 $testCallresponse = todayInTv($data);
 
 // lista Query filter
@@ -216,18 +212,24 @@ function todayInTv($data)
         if ($responseItem->from == "getDataTo") {
             $getDataTo = $responseItem->values[0][0];
             echo "data are stored to: " . $getDataTo;
+            echo "<br>Update scheduled at 16:00 Rome Locatio";
         }
-        if ($responseItem->from == "todaytv") {
+          if ($responseItem->from == "tvQueryWithImages" or $responseItem->from == "tvQueryPreferredWithImages") {
+
             //		echo("Alarms, current data: <br>");
             $data = $responseItem->values;
             echo "<head><style>table, th, td {border: 1px solid black;}</style></head>";
             echo "<table style=\"width:100%\">";
 
-            echo "<tr><th style=\"width:30%\">source</th><th>title</th><th>image</th></tr>";
+            echo "<tr><th style=\"width:30%\">channel</th><th>title</th><th>image</th></tr>";
 
             // echo "<table width="100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0>\"<style>table, th, td {border: 1px solid black;}</style>
             foreach ($data as $key => $value) {
-                //     var_dump($value[0][0]);
+                //     vCanaar_dump($value[0][0]);
+
+            //    $pieces = explode("_", $value[0]);
+              //  $channel = $pieces[1] . " " . $pieces[3];
+
                 $channel = $value[0];
                 $program = $value[1];
                 $link_image = $value[2];

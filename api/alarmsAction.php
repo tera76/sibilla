@@ -12,10 +12,13 @@ class alarmsAction
 
     function updateAlarms($action)
     {
-        if (!isset($action["parameters"]["name"])) {
+        if (!isset($action["parameters"]["name"]))
+        {
             $allAlarms = $this->getAllAlarmsInDb();
             $this->saveDataHistory($allAlarms);
-        } else {
+        }
+        else
+        {
             $parameterName = $action["parameters"]["name"];
 
             $Alarms = $this->getAlarmInDb($parameterName);
@@ -33,9 +36,7 @@ class alarmsAction
     function getAlarmsTotalView()
     {
         $response["from"] = "getAlarmsTotalView";
-        $response["values"]["total_views"] = $totalView = $this->countName(
-            "current_time"
-        );
+        $response["values"]["total_views"] = $totalView = $this->countName("current_time");
 
         array_push($GLOBALS["babboDiMinchia"]["response"], $response);
     }
@@ -82,7 +83,8 @@ class alarmsAction
 
         $array = null;
 
-        foreach ($allAlarms as $item) {
+        foreach ($allAlarms as $item)
+        {
             $name = $item[0];
 
             $value = $this->getDZeroForName($name);
@@ -91,9 +93,9 @@ class alarmsAction
             $response["values"][$name] = $value;
             //            $response[$name] = $value;
             //       array_push($GLOBALS['babboDiMinchia']['response'], $response);
+
         }
         //  $response['values']  = "ciccio";
-
         array_push($GLOBALS["babboDiMinchia"]["response"], $response);
 
         return $array;
@@ -110,40 +112,37 @@ class alarmsAction
 
     function saveDataHistory($allAlarms)
     {
-        foreach ($allAlarms as $item) {
+        foreach ($allAlarms as $item)
+        {
             $name = $item[0];
             $url = $item[1];
             $locator = $item[2];
             $locatorType = $item[3];
 
-            if ($locator != "localAction") {
-                if ($locatorType == "" || $locatorType == "json") {
+            if ($locator != "localAction")
+            {
+                if ($locatorType == "" || $locatorType == "json")
+                {
                     // var_dump("*******************************" . $locatorType);
-
                     $is_Imagelink = preg_match("/_image_link/", $name);
-                    if ($is_Imagelink) {
+                    if ($is_Imagelink)
+                    {
                         // $url="https://www.googleapis.com/customsearch/v1?key=AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo&q=ciccio&cx=02c284d1e5e214401&limit=1&totalResults=1";
                         $query = getQueryFilmImage($name);
                         //  $query="via%20col%20vento";
                         $url = preg_replace("/__QUERYFILM__/", $query, $url);
                         $token1 = "AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo";
                         $token2 = "AIzaSyCqQ4gssseK6C2NlhapDw_iOfNHBV_50E0";
-                        $url = preg_replace(
-                            "/__GOOGLEAPITOKEN__/",
-                            $token2,
-                            $url
-                        );
+                        $url = preg_replace("/__GOOGLEAPITOKEN__/", $token1, $url);
                     }
 
-                      if (strpos($locator, "__IDVAR__") >0) {
-                        for ($ii = 0; $ii < 3; $ii++) {
-                            $locator_var = preg_replace(
-                                '/__IDVAR__/',
-                                $ii,
-                                $locator
-                            );
+                    if (strpos($locator, "__IDVAR__") > 0)
+                    {
+                        for ($ii = 0;$ii < 3;$ii++)
+                        {
+                            $locator_var = preg_replace('/__IDVAR__/', $ii, $locator);
 
-$internalAction = <<<EOD
+                            $internalAction = <<<EOD
 {
   "parameters": {
     "externalUrl": "$url",
@@ -154,20 +153,19 @@ $internalAction = <<<EOD
 }
 EOD;
 
-                            $internalAction_decoded = json_decode(
-                                $internalAction,
-                                true
-                            );
-                            $externalServiceGetAction = externalServiceGetAction(
-                                $internalAction_decoded
-                            );
+
+                            $internalAction_decoded = json_decode($internalAction, true);
+                            $externalServiceGetAction = externalServiceGetAction($internalAction_decoded);
                             $value = '';
                             $value = $externalServiceGetAction[$name];
-                            if ($value !=null && $value != '') {
+                            if ($value != null && $value != '')
+                            {
                                 break;
                             }
                         }
-                    }  else {
+                    }
+                    else
+                    {
                         $internalAction = <<<EOD
                     {
                     	"parameters": {
@@ -178,21 +176,17 @@ EOD;
                     	}
                     }
 EOD;
-                        $internalAction_decoded = json_decode(
-                            $internalAction,
-                            true
-                        );
+                        $internalAction_decoded = json_decode($internalAction, true);
 
-                        $externalServiceGetAction = externalServiceGetAction(
-                            $internalAction_decoded
-                        );
+                        $externalServiceGetAction = externalServiceGetAction($internalAction_decoded);
 
                         $value = $externalServiceGetAction[$name];
                     }
                     $this->saveAlarmsOnDb($name, $value);
-                } elseif ($locatorType == "xpath" || $locatorType == "html") {
+                }
+                elseif ($locatorType == "xpath" || $locatorType == "html")
+                {
                     //   var_dump("*******************************" . $locatorType);
-
                     $internalAction = <<<EOD
                     {
                     	"parameters": {
@@ -204,14 +198,10 @@ EOD;
                     }
 EOD;
 
-                    $internalAction_decoded = json_decode(
-                        $internalAction,
-                        true
-                    );
 
-                    $externalServiceGetAction = externalPageGetAction(
-                        $internalAction_decoded
-                    );
+                    $internalAction_decoded = json_decode($internalAction, true);
+
+                    $externalServiceGetAction = externalPageGetAction($internalAction_decoded);
 
                     $value = $externalServiceGetAction[$name];
 
@@ -223,8 +213,7 @@ EOD;
 
     function getAllAlarmsInDb()
     {
-        $query =
-            "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active ='1';";
+        $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active ='1';";
 
         $internalAction["parameters"]["query"] = $query;
 

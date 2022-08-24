@@ -189,9 +189,15 @@ function helloWork($data)
             $current_date = $responseItem->values->current_time[0][0];
             $current_topic = $responseItem->values->corriere_primaPosClassifica_title[0][0];
             $corriere_topic_totalViews = $responseItem->values->corriere_primaPosClassifica_totView[0][0];
+
             $coronaVirus_Total_confirmed = $responseItem->values->coronaVirus_Total_confirmed[0][0];
+						if ($coronaVirus_Total_confirmed==null ) $coronaVirus_Total_confirmed = "--not defined--";
+
             $last_comment = $responseItem->values->comment_this[0][0];
+
             $cicciolina_altezza = $responseItem->values->cicciolina_altezza[0][0];
+						if ($cicciolina_altezza==null ) $cicciolina_altezza = "--not defined--";
+
             $ansa_news = $responseItem->values->ansa_news[0][0];
             if ($ansa_news==null ) $ansa_news = "--not defined--";
 

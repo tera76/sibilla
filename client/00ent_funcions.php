@@ -32,7 +32,7 @@ function getMeasuresV2($qasm, $shots, $loop = 1)
 
         if ($shots > 1)
         {
-            getMeasures($curl);
+            getMeasures($curl,$shots);
         }
         else
         {
@@ -51,7 +51,7 @@ function getMeasuresV2($qasm, $shots, $loop = 1)
 
 
 
-function getMeasures($curl)
+function getMeasures($curl, $shots)
 {
     $start = microtime(true);
 
@@ -65,7 +65,7 @@ function getMeasures($curl)
     // q0 conta 1 quante volte? su quante?
     $q0 = 0;
     $q1 = 0;
-    $shots = 1024;
+
     printStepMessage("Shots: ", $shots);
 sort($counts);
 
@@ -108,10 +108,15 @@ foreach ($counts as $food)
 
 $q0_perc = 100 * $q0 / $shots;
 $q1_perc = 100 * $q1 / $shots;
-printStepMessage("<br>Alice, q0 conta 1 quante volte? in perc. ", $q0_perc . " %");
+printStepMessage("<br>Alice osserva q0=1 nel ", $q0_perc . " % delle sue misure;");
 
 
-printStepMessage("Bob, q1 conta 1 quante volte? in perc. ", $q1_perc . " %");
+printStepMessage("Bob osserva q1=1 nel  ", $q1_perc . " % delle sue dmisure;");
+
+if ($q0_perc == $q1_perc) {
+
+  printStepMessage("Le misure di A e B sono corrrelate!","","" );
+}
 
 
 

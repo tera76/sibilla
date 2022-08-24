@@ -74,7 +74,7 @@ function testCall($data)
     $start = microtime(true);
     $response = file_get_contents($url, false, $context);
     $end = microtime(true);
-    var_dump($response);
+ 
 
     $duration = $end - $start;
     $output = "";
