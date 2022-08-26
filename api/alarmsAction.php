@@ -228,10 +228,12 @@ EOD;
     function getAllAlarmsInDb($action)
     {
 
-$batch= $action["parameters"]["batch"];
+      if(!isset($action["parameters"]["batch"]))   {
+        $batch=999;}
+else $batch= $action["parameters"]["batch"];
 
 
-if($batch == 999)   {
+if( $batch == 999)   {
         $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active >0;";
 }
 else {  $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active = $batch;";}

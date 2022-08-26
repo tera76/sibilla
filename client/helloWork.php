@@ -422,7 +422,7 @@ function saveComment($comment_to_post)
             "name": "login",
             "parameters": {
                 "email": "ciccio",
-                "keyCode1": "1970"
+                "keyCode1": "1976"
             }
         },
 		{
