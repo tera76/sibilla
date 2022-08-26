@@ -1,5 +1,17 @@
 <?php
 include_once "./getQueryFilmImage.php";
+
+$debug=false;
+if ($debug==true){
+
+$action = "{}";
+
+echo "ciccio";
+updateAlarms();
+die();
+}
+
+
 class alarmsAction
 {
     public function __construct()
@@ -12,9 +24,11 @@ class alarmsAction
 
     function updateAlarms($action)
     {
+
         if (!isset($action["parameters"]["name"]))
         {
-            $allAlarms = $this->getAllAlarmsInDb();
+
+            $allAlarms = $this->getAllAlarmsInDb($action);
             $this->saveDataHistory($allAlarms);
         }
         else
@@ -27,9 +41,9 @@ class alarmsAction
         }
     }
 
-    function getAlarmsDZero()
+    function getAlarmsDZero($action)
     {
-        $allAlarms = $this->getAllAlarmsInDb();
+        $allAlarms = $this->getAllAlarmsInDb($action);
         $this->getDZero($allAlarms);
     }
 
@@ -133,7 +147,7 @@ class alarmsAction
                         $url = preg_replace("/__QUERYFILM__/", $query, $url);
                         $token1 = "AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo";
                         $token2 = "AIzaSyCqQ4gssseK6C2NlhapDw_iOfNHBV_50E0";
-                        $url = preg_replace("/__GOOGLEAPITOKEN__/", $token1, $url);
+                        $url = preg_replace("/__GOOGLEAPITOKEN__/", $token2, $url);
                     }
 
                     if (strpos($locator, "__IDVAR__") > 0)
@@ -211,10 +225,16 @@ EOD;
         }
     }
 
-    function getAllAlarmsInDb()
+    function getAllAlarmsInDb($action)
     {
-        $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active ='1';";
 
+$batch= $action["parameters"]["batch"];
+
+
+if($batch == 999)   {
+        $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active >0;";
+}
+else {  $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active = $batch;";}
         $internalAction["parameters"]["query"] = $query;
 
         return sql($internalAction);

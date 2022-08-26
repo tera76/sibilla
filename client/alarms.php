@@ -1,7 +1,10 @@
 <?php
 // Turn off all error reporting
 error_reporting(0);
-
+if (isset($_GET['batch'])) $batch =  intval($_GET['batch']);
+else {
+    $batch = 999;
+}
 /*
  * alarms is the cron scheduled for uploading data every 10 miutes.
  * */
@@ -15,11 +18,11 @@ if ($data == "") {
     "request": [
         {
             "name": "updateAlarms",
-            "parameters": {}
+            "parameters": {"batch":$batch}
         },
         {
             "name": "getAlarmsDZero",
-            "parameters": {}
+            "parameters": {"batch":$batch}
         }
     ]
 }
@@ -29,12 +32,15 @@ EOD;
 $dataToarray = json_decode($data);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 
+
 // $data = $_POST['request'];
 
 $testCallresponse = makeCall($data);
 
 
 
+var_dump($testCallresponse );
+die();
 
 
 

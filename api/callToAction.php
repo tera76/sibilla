@@ -61,7 +61,7 @@ callToAction($action)
             break;
         case "getAlarmsDZero":
             $alarms = new alarmsAction();
-            $alarms->getAlarmsDZero();
+            $alarms->getAlarmsDZero($action);
             break;
         case "getAlarmsTotalView":
             $alarms = new alarmsAction();

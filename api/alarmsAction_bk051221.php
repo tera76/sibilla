@@ -37,6 +37,8 @@ class alarmsAction
 
     function getAlarmsDZero()
     {
+      var_dump();
+      die();
         $allAlarms = $this->getAllAlarmsInDb();
         $this->getDZero($allAlarms);
 

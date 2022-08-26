@@ -30,7 +30,7 @@ else {
   if (loginAction == true) {
 
       $loginPresent = false;
- 
+
       foreach ($actions as $action) {
 
           if ($action['name'] == 'login') $loginPresent = true;
