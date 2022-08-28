@@ -3,7 +3,7 @@
 error_reporting(0);
 
 // $tvQuery  = "select data,value from (select  timestamp, data,value  from syb_alarms_history WHERE data like `staseraInTv%` and DATE(`timestamp`) = CURDATE() GROUP BY data  ORDER BY  max(timestamp) desc ) as h ,  syb_tv_preferred as p where  instr(lower(value),lower(p.`keys`)) limit 5";
-$tvQuery  = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join  (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  (select `keys` from syb_tv_preferred ) as p where h.id = d.id and  instr(lower(value),lower(p.`keys`))";
+// $tvQuery  = "select distinct h.data, h.value  from (select  * from syb_alarms_history where  data like 'staseraInTv%' and  DATE(`timestamp`) >= CURDATE() order by timestamp desc) as h  join  (select  id,  data    from (select  max(id) as id, max(timestamp) , max(data) as data  from syb_alarms_history where data like 'staseraInTv%'  GROUP by data ) as h  ) as d join  (select `keys` from syb_tv_preferred ) as p where h.id = d.id and  instr(lower(value),lower(p.`keys`))";
 
 $data = <<<EOD
 {
@@ -80,13 +80,6 @@ $data = <<<EOD
 			"from": "getDataTo",
 			"parameters": {
 				"query": "select timestamp from syb_alarms_history order by id desc limit 1 "
-			}
-		},
-		{
-			"name": "sql",
-			"from": "todaytv",
-			"parameters": {
-				"query": "$tvQuery"
 			}
 		}
 	]
@@ -178,8 +171,7 @@ function helloWork($data)
     $metal_price_current_link= null;
     $metal_price_current_kg_link= null;
     $classifica_dischi_italiani_link= null;
-    $tv = null;
-
+		$euroDollarChange= null;
 
     foreach ($ciccio as $chiave => $responseItem) {
 
@@ -211,6 +203,8 @@ function helloWork($data)
             if ($metal_price_current_kg==null ) $metal_price_current_kg = "--not defined--";
 
 
+					 $euroDollarChange = $responseItem->values->euroDollarChange[0][0];
+  			   if ($euroDollarChange==null ) $euroDollarChange = "--not defined--";
 
         }
 
@@ -290,25 +284,7 @@ function helloWork($data)
             $getDataTo = $responseItem->values[0][0];
 
         }
-        if ($responseItem->from == 'todaytv') {
 
-            $tv = $responseItem->values;
-
-            $tv00 = $tv[0][0];
-            $tv01 = $tv[0][1];
-            $tv10 = $tv[1][0];
-            $tv11 = $tv[1][1];
-            $tv20 = $tv[2][0];
-            $tv21 = $tv[2][1];
-            $tv30 = $tv[3][0];
-            $tv31 = $tv[3][1];
-            $tv40 = $tv[4][0];
-            $tv41 = $tv[4][1];
-
-
-
-
-        }
 
 
 
@@ -347,6 +323,8 @@ with more than <a href='$corriere_topic_totalViews_link'><b>$corriere_topic_tota
 
 <br>Gold is at <a href='$metal_price_current_link'><b>$metal_price_current</b></a> euro for oz.
 The kg Gold is at <a href='$metal_price_current_kg_link'><b>$metal_price_current_kg</b></a> . <br>
+
+<br>Euro Dollar change is at <b>$euroDollarChange</b></a> changes<br>
 
 <br>In the music hit parade the winner is the title <a href='$classifica_dischi_italiani_link'><b>$classifica_dischi_italiani</b></a> for now. <br>
 
@@ -422,7 +400,7 @@ function saveComment($comment_to_post)
             "name": "login",
             "parameters": {
                 "email": "ciccio",
-                "keyCode1": "1976"
+                "keyCode1": "1970"
             }
         },
 		{

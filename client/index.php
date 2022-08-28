@@ -1,7 +1,7 @@
 <?php
 
 echo '<br><strong>Backend</strong><br><br>';
-echo ' <a href="alarms.php">alarms</a></br>';
+echo ' <a href="alarms.php?batch=1">alarms</a></br>';
 echo '<a href="test.php">test</a></br>';
 
 
