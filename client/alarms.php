@@ -118,7 +118,7 @@ $url = apiEntryPoint;
             //     var_dump($value[0][0]);
                 $derivataZero = $value[0][0];
                 // echo "<br>" . "<b>$key</b> is at $derivataZero"  ;
-                echo "<tr><td><b>$key :</b></td><td>$derivataZero</td></tr>"  ;
+                echo "<tr><td><b>$key </b></td><td>$derivataZero</td></tr>"  ;
 
             }
             echo "</table>";
