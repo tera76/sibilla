@@ -166,12 +166,14 @@ function helloWork($data)
     $getDataFrom = null;
     $getDataTo = null;
     $classifica_dischi_italiani = null;
+		$classifica_dischi_author = null;
     $metal_price_current = null;
     $metal_price_current_kg = null;
     $metal_price_current_link= null;
     $metal_price_current_kg_link= null;
     $classifica_dischi_italiani_link= null;
 		$euroDollarChange= null;
+
 
     foreach ($ciccio as $chiave => $responseItem) {
 
@@ -196,6 +198,10 @@ function helloWork($data)
             $classifica_dischi_italiani = $responseItem->values->classifica_dischi_italiani[0][0];
             if ($classifica_dischi_italiani==null ) $classifica_dischi_italiani = "--not defined--";
 
+						$classifica_dischi_it_author = $responseItem->values->classifica_dischi_it_author[0][0];
+						if ($classifica_dischi_it_author==null ) $classifica_dischi_it_author = "--not defined--";
+
+
             $metal_price_current = $responseItem->values->gold_price[0][0];
             if ($metal_price_current==null ) $metal_price_current = "--not defined--";
 
@@ -205,6 +211,12 @@ function helloWork($data)
 
 					 $euroDollarChange = $responseItem->values->euroDollarChange[0][0];
   			   if ($euroDollarChange==null ) $euroDollarChange = "--not defined--";
+
+
+			//		 $televideoRai101 = $responseItem->values->televideoRai101[0][0];
+			//		 $televideoRai101_arr = explode('sottopagina 01', $televideoRai101);
+			//		 $televideoRai101 = $televideoRai101_arr[1];
+  		//	   if ($televideoRai101==null ) $televideoRai101 = "--not defined--";
 
         }
 
@@ -324,19 +336,24 @@ with more than <a href='$corriere_topic_totalViews_link'><b>$corriere_topic_tota
 <br>Gold is at <a href='$metal_price_current_link'><b>$metal_price_current</b></a> euro for oz.
 The kg Gold is at <a href='$metal_price_current_kg_link'><b>$metal_price_current_kg</b></a> . <br>
 
-<br>Euro Dollar change is at <b>$euroDollarChange</b></a> changes<br>
+<br>Euro Dollar change is at <b>$euroDollarChange</b> changes<br>
 
-<br>In the music hit parade the winner is the title <a href='$classifica_dischi_italiani_link'><b>$classifica_dischi_italiani</b></a> for now. <br>
+<br>In the music hit parade the winner is <b>$classifica_dischi_it_author</b> with <a href='$classifica_dischi_italiani_link'><b>$classifica_dischi_italiani</b></a> for now. <br>
 
 <br>Using an html source with xpath locator we have <a href='$cicciolina_altezza_link'><b>$cicciolina_altezza</b></a> for cicciolina height, <br>
-<br>last news from web is <b>$ansa_news</b><br>
+
 
 <br>The Coronavirus give yous <a href='$coronaVirus_Total_confirmed_link'<b>$coronaVirus_Total_confirmed</b></a> confirmed cases but we are working on the cure.<br>
 <br>Last comment on this article is: '<b>$last_comment</b>', <br>
 
+<h2>Le tue ultime ore... :) </h2>
+<b>$ansa_news</b><br>
+<a href="leUltimeOre.php">Visit breaking news history from televideo rai...</a>
+
+
 <h2>Che Danno Stasera?</h2>
 Simulation:
-<a href="cheDannoStasera_images.php">Visit /sibilla/client/cheDannoStasera_images.php!</a>
+<br><a href="cheDannoStasera_images.php">Visit /sibilla/client/cheDannoStasera_images.php!</a>
 
 
 <h2>Che Succede?</h2>
@@ -349,6 +366,10 @@ Simulation:
    <br><br> The duration of this request (response time) is approx: <b>$duration</b> seconds!
     <br>Update data are at  <b>$total_views</b>  steps. <br>
      <br>Starting from  <b>$getDataFrom</b>  to  <b>$getDataTo</b>   . <br><br>
+
+		 <a href="index.php">index.php</a></br>
+
+
 
 EOD;
     echo "$data";
