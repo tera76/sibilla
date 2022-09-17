@@ -1,7 +1,8 @@
 <?php
 
 echo '<br><strong>Backend</strong><br><br>';
-echo ' <a href="alarms.php?batch=1">alarms</a></br>';
+echo ' <a href="alarms.php?batch=1">alarms1</a></br>';
+echo ' <a href="alarms.php?batch=2">alarms2</a></br>';
 echo '<a href="test.php">test</a></br>';
 
 

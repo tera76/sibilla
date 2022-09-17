@@ -37,9 +37,13 @@ else {
 }
 
 if (isset($_GET['shots'])) $shots =  intval($_GET['shots']);
+
 else {
     $shots = 1000;
 }
+
+// var_dump($shots);
+// die();
 
 
 
