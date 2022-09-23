@@ -232,8 +232,14 @@ function todayInTv($data)
 
                 $channel = $value[0];
                 $program = $value[1];
+
+
                 $link_image = $value[2];
-                echo "<tr>";
+								$voteYes ="<a href='../api/cheDannoStasera_vote.php?vote=1&program=$program'><b> good!........    </b></a>";
+								$voteNo ="<a href='../api/cheDannoStasera_vote.php?vote=-1&program=$program'><b> fuck! </b></a>";
+
+							  echo "<tr>";
+  							$program =   $program . $voteYes . $voteNo;
 
 
                     echo "<td><b>$channel</b></td><td>$program</td><td><a href=\"$link_image\"><img src=\"$link_image\" width=100</td>";
