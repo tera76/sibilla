@@ -235,8 +235,8 @@ function todayInTv($data)
 
 
                 $link_image = $value[2];
-								$voteYes ="<a href='../api/cheDannoStasera_vote.php?vote=1&program=$program'><b> good!........    </b></a>";
-								$voteNo ="<a href='../api/cheDannoStasera_vote.php?vote=-1&program=$program'><b> fuck! </b></a>";
+								$voteYes ="<a href='cheDannoStasera_vote.php?vote=1&program=$program'><b> good!........    </b></a>";
+								$voteNo ="<a href='cheDannoStasera_vote.php?vote=-1&program=$program'><b> fuck! </b></a>";
 
 							  echo "<tr>";
   							$program =   $program . $voteYes . $voteNo;
