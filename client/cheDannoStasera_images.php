@@ -75,7 +75,7 @@ EOD;
 $dataToarray = json_decode($tvQueryPreferredWithImages);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
 
-$testCallresponse = todayInTv($data);
+$testCallresponse = todayInTv($data,"preferred");
 
 
 
@@ -99,7 +99,7 @@ EOD;
 
 $dataToarray = json_decode($tvQueryImages);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
-$testCallresponse = todayInTv($data);
+$testCallresponse = todayInTv($data,"all");
 
 // lista Query filter
 /*
@@ -171,8 +171,9 @@ die();
 //
 //
 
-function todayInTv($data)
+function todayInTv($data, $target)
 {
+
     $postdata = $data; //http_build_query($data);
     $opts = [
         "http" => [
@@ -235,11 +236,34 @@ function todayInTv($data)
 
 
                 $link_image = $value[2];
-								$voteYes ="<a href='cheDannoStasera_vote.php?vote=1&program=$program'><b> good!........    </b></a>";
-								$voteNo ="<a href='cheDannoStasera_vote.php?vote=-1&program=$program'><b> fuck! </b></a>";
+
+
+$leonIconUp= "&#128077;";
+$leonIconDown= "&#128078;";
+
+if ($target=="preferred") {
+
+//		echo $voteNo;
+	$voteNo ="<a href='cheDannoStasera_vote.php?vote=-1&program=$program'><b> ...fuck!$leonIconDown</b></a>";
+	$program_vote =   $program  . $voteNo;
+// echo "$program_vote";
+}
+if ($target=="all") {
+//		echo "tttttttttttttttt";
+$voteYes ="<a href='cheDannoStasera_vote.php?vote=1&program=$program'><b> ...good!$leonIconUp</b></a>";
+	$program_vote =   $program  . $voteYes;
+// echo "$program_vote";
+}
+
+
+$program =   $program_vote;
+
+
+
 
 							  echo "<tr>";
-  							$program =   $program . $voteYes . $voteNo;
+
+
 
 
                     echo "<td><b>$channel</b></td><td>$program</td><td><a href=\"$link_image\"><img src=\"$link_image\" width=100</td>";
