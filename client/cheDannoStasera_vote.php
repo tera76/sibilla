@@ -64,7 +64,7 @@ if($vote==1) {
 
 
 tvVoteAddRemove($tvQueryAddFilterPreferred, $tvQueryDeleteFilterPreferred);
-echo "<a href=\"cheDannoStasera.\">GO BACK</a>";
+echo "<a href=\"cheDannoStasera.php\">GO BACK</a>";
 
 	//			echo "<button onclick="history.back()">Go Back</button>";
 function tvVoteAddRemove($valueAdd, $valueRemove)
