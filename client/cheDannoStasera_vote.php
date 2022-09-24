@@ -54,17 +54,20 @@ echo "<br>";
 if($vote==1) {
 
   $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_preferred(`keys`) VALUES('$recucedTitle2');";
+  $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_notPreferred where `keys`='$recucedTitle2' limit 1;";
 }
   else if($vote==-1) {
     $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_notPreferred(`keys`) VALUES('$recucedTitle2');";
+    $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_preferred where `keys`='$recucedTitle2' limit 1;";
+
   }
 
 
-insertInToNotPreferredTable($tvQueryAddFilterPreferred);
-echo "<a href=\"cheDannoStasera.php\">GO BACK</a>";
+tvVoteAddRemove($tvQueryAddFilterPreferred, $tvQueryDeleteFilterPreferred);
+echo "<a href=\"cheDannoStasera.\">GO BACK</a>";
 
 	//			echo "<button onclick="history.back()">Go Back</button>";
-function insertInToNotPreferredTable($value)
+function tvVoteAddRemove($valueAdd, $valueRemove)
 
 {
 
@@ -84,8 +87,14 @@ $postdata = <<<EOD
 {
   "name": "sql",
   "parameters": {
-    "query": "$value"
+    "query": "$valueAdd"
   }
+},
+{
+"name": "sql",
+"parameters": {
+"query": "$valueRemove"
+}
 }
 ]
 }
