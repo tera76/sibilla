@@ -15,7 +15,7 @@ echo '<a href="goldPower.php">goldPower</a></br>';
 
 echo '<br><strong>tv & socials</strong><br><br>';
 // echo '<a href="cheDannoStasera.php">cheDannoStasera.php</a></br>';
-echo '<a href="cheDannoStasera_images.php">cheDannoStasera!</a></br>';
+echo '<a href="cheDannoStasera.php">cheDannoStasera!</a></br>';
 echo '<a href="cheSuccede.php">cheSuccede.php</a></br>';
 // echo '<a href="../GoJS/samples/network.html">gojs network</a></br>';
 
