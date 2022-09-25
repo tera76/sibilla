@@ -58,8 +58,8 @@ if($vote==1) {
 }
   else if($vote==-1) {
     $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_notPreferred(`keys`) VALUES('$recucedTitle2');";
-    $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_preferred where `keys`='$recucedTitle2' limit 1;";
-
+  //  $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_preferred where `keys`='$recucedTitle2' limit 1;";
+    $tvQueryDeleteFilterPreferred = "select * from  syb_tv_preferred limit 1;"; // onutile fake query
   }
 
 
