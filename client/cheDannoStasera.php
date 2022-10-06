@@ -161,9 +161,16 @@ $testCallresponse = todayInTv($data);
  *  Terminate suite
  */
 
+
+
+echo "<br> Visit the article on sibilla report blog ";
+
+echo "<a href='http://tera.altervista.org/che-danno-stasera-the-sibilla-report/'>the link</a>";
+
+
 $end = microtime(true);
 $duration = $end - $start;
-echo "**** Duration: " . $duration . " sec.";
+echo "<br> **** Duration: " . $duration . " sec.";
 die();
 
 //
@@ -212,7 +219,7 @@ function todayInTv($data, $target)
     foreach ($ciccio as $chiave => $responseItem) {
         if ($responseItem->from == "getDataTo") {
             $getDataTo = $responseItem->values[0][0];
-            echo "data are stored to: " . $getDataTo;
+            echo "data are stored to: " . $getDataTo . " UTC timezone";
             echo "<br>Update scheduled at 16:00 Rome Locatio";
         }
           if ($responseItem->from == "tvQueryWithImages" or $responseItem->from == "tvQueryPreferredWithImages") {
