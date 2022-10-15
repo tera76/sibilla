@@ -115,10 +115,12 @@ printStepMessage("Bob osserva q1=1 nel  ", $q1_perc . " % delle sue dmisure;");
 
 if ($q0_perc == $q1_perc) {
 
-  printStepMessage("Le misure di A e B sono corrrelate!","","" );
+  printStepMessage("Le misure di A e B sono ","corrrelate!"  );
 }
 
+// color box
 
+showBox($q0_perc,$q1_perc);
 
 /*
 printStepMessage("Single measure?", "spettro, distribuzione, no sequenza?");
@@ -146,6 +148,43 @@ printStepMessage("<br> **** Duration", $duration);
 /*
  *  Now we define some standard function for style and print formatting
 */
+
+
+
+function showBox($c1, $c2)
+{
+
+
+   $color1 = percentageToColor($c1);
+   $color2 = percentageToColor($c2);
+   echo "<br>";
+echo $c1 . " hex" . $color1  . "<br>" ;
+echo $c1 . " hex" . $color1  ." <br>" ;
+// $color= "$c1" http://www.perbang.dk/rgb/7F7F7F/;
+  echo '<tr><td><div style="width:102px; height:102px; background-color:'.$color1.'"></div></td>';
+  echo '<td><div style="width:102px; height:102px; background-color:'.$color2.'"></div></td><tr>';
+
+}
+
+
+function percentageToColor($c)
+{
+  if($c== 0) return "#000000"; // nero
+  if($c> 0 &  $c< 10) return "#191919"; // nero
+  else if($c>= 10 & $c < 20 ) return "#333333";
+  else if($c>= 20 & $c < 35 ) return "#4C4C4C";
+  else if($c>= 30 & $c < 50 ) return "#666666";
+  else if($c>= 50 & $c < 60 ) return "#7F7F7F";
+  else if($c>= 60 & $c < 70 ) return "#999999";
+  else if($c>= 70 & $c < 80 ) return "#B2B2B2";
+  else if($c>= 80 & $c < 90 ) return "#CCCCCC";
+  else if($c>= 90 & $c < 100 ) return "#E5E5E5"; // bianco
+  if($c == 100) return "#FFFFFF";
+  else return "#CC1919";
+}
+
+
+
 
 function getSingleShot($curl)
 {
