@@ -122,6 +122,7 @@ if ($q0_perc == $q1_perc) {
 
 showBox($q0_perc,$q1_perc);
 
+
 /*
 printStepMessage("Single measure?", "spettro, distribuzione, no sequenza?");
 
@@ -159,7 +160,7 @@ function showBox($c1, $c2)
    $color2 = percentageToColor($c2);
    echo "<br>";
 echo $c1 . " hex" . $color1  . "<br>" ;
-echo $c1 . " hex" . $color1  ." <br>" ;
+echo $c2 . " hex" . $color2  ." <br>" ;
 // $color= "$c1" http://www.perbang.dk/rgb/7F7F7F/;
   echo '<tr><td><div style="width:102px; height:102px; background-color:'.$color1.'"></div></td>';
   echo '<td><div style="width:102px; height:102px; background-color:'.$color2.'"></div></td><tr>';
