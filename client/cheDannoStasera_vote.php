@@ -1,4 +1,4 @@
-<?php
+da<?php
 
 $start = microtime(true);
 
@@ -33,13 +33,26 @@ echo "<p>$program</p>";
 
 $str = $program;
 
-$recucedTitle1 = preg_replace('/([0-9]|0[0-9]|1[0-9]|2[0-3]).[0-5][0-9]/', '',   $str);
+// $recucedTitle1 = preg_replace('/([0-9]|0[0-9]|1[0-9]|2[0-3]).[0-5][0-9]/', '',   $str);
+
+$recucedTitle1 = preg_replace('/([0-2][0-9]|1[0-9]|2[0-3]).[0-5][0-9]/', '',   $str);
+
 
 $words = explode(" ", trim($recucedTitle1));
 
-$recucedTitle2 = $words[0] . " " . $words[1];
 
 
+$emptyArray = (array) "";
+$words = explode(" ", trim($recucedTitle1));
+
+$recucedTitle2 = trim($words[0] . " " . $words[1] . " " . $words[2]);
+
+
+$recucedTitle3 = preg_replace('/"/','\"', $recucedTitle2);
+
+$recucedTitle4 = preg_replace('/\'/',"\'", $recucedTitle3);
+
+$recucedTitle = $recucedTitle1;
 // var_dump($words[0] . ' ' . $words[2]);
 
 
@@ -47,18 +60,18 @@ $recucedTitle2 = $words[0] . " " . $words[1];
 
 
 echo "<br> reduced title: ";
-echo $recucedTitle2;
+echo $recucedTitle;
 echo "<br>";
 
 
 if($vote==1) {
 
-  $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_preferred(`keys`) VALUES('$recucedTitle2');";
-  $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_notPreferred where `keys`='$recucedTitle2' limit 1;";
+  $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_preferred(`keys`) VALUES('$recucedTitle');";
+  $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_notPreferred where `keys`='$recucedTitle' limit 1;";
 }
   else if($vote==-1) {
-    $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_notPreferred(`keys`) VALUES('$recucedTitle2');";
-  //  $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_preferred where `keys`='$recucedTitle2' limit 1;";
+    $tvQueryAddFilterPreferred = "INSERT INTO syb_tv_notPreferred(`keys`) VALUES('$recucedTitle');";
+  //  $tvQueryDeleteFilterPreferred = "DELETE FROM syb_tv_preferred where `keys`='$recucedTitle' limit 1;";
     $tvQueryDeleteFilterPreferred = "select * from  syb_tv_preferred limit 1;"; // onutile fake query
   }
 

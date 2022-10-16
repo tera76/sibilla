@@ -45,7 +45,8 @@ else {
 // var_dump($shots);
 //  die();
 
-
+echo "<h1>Two qbit quantum circuit </h1>";
+echo "<h2>Enjoy using url  parameters!</h2>";
 
 echo "<br> q0state: "  . $q0state ;
 echo "<br> q0nstates: " . $q0nstates ;
@@ -123,11 +124,6 @@ measure q[1] -> c[1];"
 EOD;
 
 $qasm = str_replace("\n","\\n",$qasm);
+echo "<br> request fron qasm:  " . $qasm . "<br>";
 
-
-#echo "<br> input ";
-#getMeasuresV2($qasm_input,$shots);
-
-echo "<br> output ";
-printf( $qasm);
 getMeasuresV2($qasm,$shots);

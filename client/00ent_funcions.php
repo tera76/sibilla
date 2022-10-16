@@ -72,6 +72,11 @@ sort($counts);
 printHistogramCountsAll($counts,$shots);
 
 
+$s["00"] = 0;
+$s["01"] = 0;
+$s["10"] = 0;
+$s["11"] = 0;
+
 foreach ($counts as $food)
 {
     $state = $food['state'];
@@ -79,6 +84,8 @@ foreach ($counts as $food)
     $count_perc = 100 * $count / $shots;
 
     printStepMessage("Stato osservato: " . $state . "; Conteggio: " . $count, $count_perc . " %" . " \t ");
+$s[$state] = $count_perc;
+
   //  printHistogramCounts($state, $count_perc);
     switch ($state)
     {
@@ -105,34 +112,37 @@ foreach ($counts as $food)
     }
 
 }
+// matrix atate color
+matrixStatesColor($s["00"], $s["01"], $s["10"], $s["11"]);
+
+
+
+
+
+
+
+
+
+
 
 $q0_perc = 100 * $q0 / $shots;
 $q1_perc = 100 * $q1 / $shots;
-printStepMessage("<br>Alice osserva q0=1 nel ", $q0_perc . " % delle sue misure;");
+echo "Alice osserva q0=1 nel " . $q0_perc . " % delle sue misure;<br>";
+echo "Bob osserva q1=1 nel " . $q1_perc . " % delle sue dmisure;<br>";
 
 
-printStepMessage("Bob osserva q1=1 nel  ", $q1_perc . " % delle sue dmisure;");
+
+
+
 
 if ($q0_perc == $q1_perc) {
 
-  printStepMessage("Le misure di A e B sono ","<p style='color:red;''>Corretlate</p>"  );
+  echo("Le misure di A e B sono Correlate!!!"  );
 }
 
 // color box
-
 showBox($q0_perc,$q1_perc);
 
-
-/*
-printStepMessage("Single measure?", "spettro, distribuzione, no sequenza?");
-
-printStepMessage("Entanglement, conta anche la sequenza delle misure ?", "");
-printStepMessage("Come coordinare  la sequenza delle misure ?", "");
-*/
-/* Data la statistica ritornare uno stato a caso
- *
-*/
-// printStepMessage("counts[]['state']",   $counts[]['state']);
 
 
 /*
@@ -152,6 +162,30 @@ printStepMessage("<br> **** Duration", $duration);
 
 
 
+
+function matrixStatesColor($s00, $s01, $s10, $s11)
+{
+
+
+echo "<table>";
+
+echo "<tr>";
+
+echo '<td><div style="width:102px; height:102px; background-color:'.percentageToColor($s00).'"></div></td>';
+echo '<td><div style="width:102px; height:102px; background-color:'.percentageToColor($s01).'"></div></td>';
+echo "</tr>";
+echo "<tr>";
+echo '<td><div style="width:102px; height:102px; background-color:'.percentageToColor($s10).'"></div></td>';
+echo '<td><div style="width:102px; height:102px; background-color:'.percentageToColor($s11).'"></div></td>';
+echo "</tr>";
+
+echo "</table>";
+echo "<br>";
+
+}
+
+
+
 function showBox($c1, $c2)
 {
 
@@ -159,11 +193,17 @@ function showBox($c1, $c2)
    $color1 = percentageToColor($c1);
    $color2 = percentageToColor($c2);
    echo "<br>";
-echo $c1 . " hex: " . $color1  . "<br>" ;
-echo $c2 . " hex: " . $color2  ." <br>" ;
+echo $c1 . "% hex in gray scale: " . $color1  . "<br>" ;
+echo $c2 . "% hex in gray scale: " . $color2  ." <br>" ;
 // $color= "$c1" http://www.perbang.dk/rgb/7F7F7F/;
-  echo '<tr><td><div style="width:102px; height:102px; background-color:'.$color1.'"></div></td>';
-  echo '<td><div style="width:102px; height:102px; background-color:'.$color2.'"></div></td><tr>';
+echo "<table>";
+echo "<tr>";
+echo '<td><div style="width:102px; height:102px; background-color:'.$color1.'"></div></td>';
+echo "</tr>";
+echo "<tr>";
+echo '<td><div style="width:102px; height:102px; background-color:'.$color2.'"></div></td>';
+echo "</tr>";
+echo "</table>";
 
 }
 
