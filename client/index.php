@@ -25,6 +25,8 @@ echo '<a href="test.php">test</a></br>';
 
 echo '<br><strong>2 qubit entanglemensst</strong><br><br>';
 echo '<a href="00input_output.php?q0state=1&q0nstates=3&q1state=0&q1nstates=3&q0rot=0&shots=100">Quantum Experience!</a></br>';#
+echo '<br><strong>3 qubit entanglemensst</strong><br><br>';
+echo '<a href="000input_output.php?q0state=1&q0nstates=3&q1state=0&q1nstates=3&state=2&q2nstates=3&q0rot=0&q1rot=0&shots=100">Quantum Experience!</a></br>';#
 
 
 #echo '<br><strong>2 qubit entanglement</strong><br><br>';
