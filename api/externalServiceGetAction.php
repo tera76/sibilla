@@ -3,7 +3,27 @@
 $debug= false;
 if($debug){
 
-  var_dump("ciccio");
+  echo "externalServiceGetAction" . "<br>";
+
+  $action = <<<EOD
+  {
+    "parameters": {
+      "externalUrl": "https://toprated.rcs.it/toprated/rest/request.action?site=rcscorriereproddef&dominio=www.corriere.it&tipologia=articolo&interazione=piuvisti&giorni=1&numerorisultati=10",
+      "get": {
+        "cicio": "classifica.dettaglioClassifica.0.title",
+        "cicio2": "classifica.dettaglioClassifica.0.title"
+      }
+    }
+  }
+EOD;
+
+
+  $response = externalServiceGetAction($action);
+  echo "response" . "<br>";
+  var_dump($response) ;
+  echo  "<br>" . "fine" . "<br>";
+
+
 die();
 }
 
@@ -11,11 +31,12 @@ die();
 function externalServiceGetAction($action)
 {
 
-    $response['from'] = "externalServiceGet";
 
+  $action=  json_decode($action, true); // decoding received JSON to array, idempotente!
 
-    $externalGetCall = $action["parameters"]["externalUrl"];
-    $gets = $action["parameters"]["get"];
+  $response['from'] = "externalServiceGet";
+  $externalGetCall = $action["parameters"]["externalUrl"];
+  $gets = $action["parameters"]["get"];
 
 
     //  $GLOBALS['babboDiMinchia'] .= "{\"from\":\"externalServiceGetAction\",\"values\": {";
@@ -25,9 +46,12 @@ function externalServiceGetAction($action)
     $decoded_externalJson = json_decode($externalJson, true); // decoding received JSON to array
 
 
+
     $returnArray = array();
 
     foreach ($gets as $key => $value) {
+
+
 
         $explodedGetTree = explode(".", $value);
         $jsonChild = $decoded_externalJson;
@@ -43,9 +67,14 @@ function externalServiceGetAction($action)
 
         $returnArray[$key] = $jsonChild;
 
-        $response['values'][$key] = $jsonChild;
+        $response['values'][$key] =   $returnArray[$key];
 
     }
+
+    // Inizializza l'array 'response' come un array vuoto se non è già stato inizializzato.
+    if (!isset($GLOBALS['babboDiMinchia']['response'])) {
+    $GLOBALS['babboDiMinchia']['response'] = array();}
+
     array_push($GLOBALS['babboDiMinchia']['response'], $response);
     // $GLOBALS['babboDiMinchia'] .= '"":""}},';
 
