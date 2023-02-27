@@ -17,21 +17,46 @@ if($debug){
   }
 EOD;
 
+$action2 = <<<EOD
+{
+  "parameters": {
+    "externalUrl": "https://https-programmitv-it.translate.goog/stasera.html?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=it&_x_tr_pto=wapp",
+    "get": {
+      "cicio": "//*[@id='cbe5']/span[1]/pre",
+      "cicio2": "//*[@id=\"cbe5\"]/span[1]/pre"
+    }
+  }
+}
+EOD;
 
-  $response = externalPageGetAction($action);
+$class = new externalPageGetAction();
+$response = $class->externalPageGetAction($action);
+
   echo "response" . "<br>";
   var_dump($response) ;
-  echo  "<br>" . "fine" . "<br>";
+  echo  "<br>" . "fin_e" . "<br>";
 
 
 die();
 }
 
 
+class externalPageGetAction {
+
+      public function __construct()
+      {
+
+
+      }
+
 
 function externalPageGetAction($action)
 {
+
+  if (!is_array($action)) {
   $action=  json_decode($action, true); // decoding received JSON to array, idempotente!
+}
+
 
     $response['from'] = "externalPageGetAction";
 
@@ -76,4 +101,5 @@ function externalPageGetAction($action)
     return $returnArray;
 
 
+}
 }

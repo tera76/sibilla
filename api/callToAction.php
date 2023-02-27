@@ -2,7 +2,7 @@
 
 include_once './testAction.php';
 include_once './identityAction.php';
-  include_once './sqlAction.php';
+include_once './sqlAction.php';
 include_once './loginAction.php';
 include_once './externalServiceGetAction.php';
 include_once './externalServiceGetCorriereFixedParamAction.php';
@@ -13,8 +13,16 @@ include_once './externalPageGetAction.php';
 include_once './diagramStatusAction.php';
 include_once './curlAction.php';
 
-function
-callToAction($action)
+
+class callToAction {
+
+      public function __construct()
+      {
+
+
+      }
+
+function callToAction($action)
 {
 
 
@@ -44,13 +52,15 @@ callToAction($action)
             identityAction($action);
             break;
         case "sql":
-            sql($action);
+            $class = new sqlAction();
+            $response = $class->sql($action);
             break;
         case "externalServiceGetCorriereFixedParam":
             externalServiceGetCorriereFixedParamAction($action);
             break;
         case "externalServiceGet":
-            externalServiceGetAction($action);
+            $class = new externalServiceGetAction();
+            $class->externalServiceGetAction($action);
             break;
         case "getTitleSubstringFromCorriere":
             getTitleSubstringFromCorriereAction($action);
@@ -127,4 +137,4 @@ cf.value, (select  value as link from syb_alarms_history where data = concat(cf.
     }
 
 
-}
+}}

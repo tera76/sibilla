@@ -4,13 +4,26 @@ include_once './sqlAction.php';
 
 $debug= false ;
 if($debug){
-$name="staseraInTv18_venti_image_link";
-$string= getQueryFilmImage($name);
 
-print_r($string);
+$name = "staseraInTv_003_18reti_rai3_image_link";
+$class = new getQueryFilmImage();
+$response = $class->getQueryFilmImage($name);
 
+echo "staseraInTv18_venti_image_link" . "\r\n";
+var_dump($response) ;
+echo  "\r\n" . "fin_e" . "\r\n";
 die();
 }
+
+
+
+class getQueryFilmImage {
+
+      public function __construct()
+      {
+
+
+      }
 
 function getQueryFilmImage($name)
 {
@@ -28,7 +41,14 @@ $tvQueryByText  = "select value from syb_alarms_history   WHERE `data` = '$chann
   $internalAction['parameters']['query'] = $tvQueryByText;
 
 
-$testCallresponse = sql($internalAction)[0][0];
+
+  $class = new sqlAction();
+  # $testCallresponse = $class->sql($internalAction)[0][0];
+  $testCallresponse = $class->sql($internalAction)[0][0];
+
+
+
+
 //  return $testCallresponse;
 $testCallresponse1= $testCallresponse;
 // $testCallresponse1=  substr($testCallresponse, 0, 200);
@@ -114,3 +134,4 @@ function queryStringFormatted($data)
 
 }
 */
+  }

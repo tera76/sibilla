@@ -17,29 +17,43 @@ if($debug){
   }
 EOD;
 
-
-  $response = externalServiceGetAction($action);
+$class = new externalServiceGetAction();
+$response = $class->externalServiceGetAction($action);
+#  $response = externalServiceGetAction->externalServiceGetAction($action);
   echo "response" . "<br>";
   var_dump($response) ;
-  echo  "<br>" . "fine" . "<br>";
+  echo  "<br>" . "fin_e" . "<br>";
 
 
 die();
 }
 
+class externalServiceGetAction {
+
+      public function __construct()
+      {
+      }
 
 function externalServiceGetAction($action)
 {
 
-
+if (!is_array($action)) {
   $action=  json_decode($action, true); // decoding received JSON to array, idempotente!
+}
+
+
 
   $response['from'] = "externalServiceGet";
   $externalGetCall = $action["parameters"]["externalUrl"];
+
+
+
+
   $gets = $action["parameters"]["get"];
 
 
     //  $GLOBALS['babboDiMinchia'] .= "{\"from\":\"externalServiceGetAction\",\"values\": {";
+
 
 
     $externalJson = file_get_contents($externalGetCall);
@@ -80,5 +94,7 @@ function externalServiceGetAction($action)
 
     return $returnArray;
     // die();
+
+}
 
 }

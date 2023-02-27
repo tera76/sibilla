@@ -1,13 +1,19 @@
 <?php
-include_once "./getQueryFilmImage.php";
+# remove todo include_once "./getQueryFilmImage.php";
+include_once "./saveDataHistoryAction.php";
 
 $debug=false;
 if ($debug==true){
 
 $action = "{}";
 
-echo "ciccio";
-updateAlarms();
+
+echo "response" . "<br>";
+$class = new alarmsAction();
+$response = $class->updateAlarms($action);
+
+var_dump($response) ;
+echo  "<br>" . "fineeee" . "<br>";
 die();
 }
 
@@ -24,6 +30,7 @@ class alarmsAction
 
     function updateAlarms($action)
     {
+
 
         if (!isset($action["parameters"]["name"]))
         {
@@ -78,8 +85,10 @@ class alarmsAction
         $query = "SELECT count(*) from syb_alarms_history where data = '$name';";
 
         $internalAction["parameters"]["query"] = $query;
+        $class = new sqlAction();
+        $response = $class->sql($internalAction);
 
-        return sql($internalAction);
+        return $response ;
     }
 
     function getUrlByNameMap($name)
@@ -88,7 +97,10 @@ class alarmsAction
 
         $internalAction["parameters"]["query"] = $query;
 
-        return sql($internalAction);
+        $class = new sqlAction();
+        $response = $class->sql($internalAction);
+
+        return $response;
     }
 
     function getDZero($allAlarms)
@@ -120,109 +132,17 @@ class alarmsAction
         $query = "SELECT value from syb_alarms_history where data = '$name' order by id desc limit 1;";
 
         $internalAction["parameters"]["query"] = $query;
+        $class = new sqlAction();
+        $response = $class->sql($internalAction);
 
-        return sql($internalAction);
+        return $response;
+
     }
 
     function saveDataHistory($allAlarms)
     {
-        foreach ($allAlarms as $item)
-        {
-            $name = $item[0];
-            $url = $item[1];
-            $locator = $item[2];
-            $locatorType = $item[3];
-
-            if ($locator != "localAction")
-            {
-                if ($locatorType == "" || $locatorType == "json")
-                {
-                    // var_dump("*******************************" . $locatorType);
-                    $is_Imagelink = preg_match("/_image_link/", $name);
-                    if ($is_Imagelink)
-                    {
-                        // $url="https://www.googleapis.com/customsearch/v1?key=AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo&q=ciccio&cx=02c284d1e5e214401&limit=1&totalResults=1";
-                        $query = getQueryFilmImage($name);
-                        //  $query="via%20col%20vento";
-                        $url = preg_replace("/__QUERYFILM__/", $query, $url);
-                        $token1 = "AIzaSyBEv-3jONsGVikOmPF9Kbd-AzANaZ4a9zo";
-                        $token2 = "AIzaSyCqQ4gssseK6C2NlhapDw_iOfNHBV_50E0";
-                        $url = preg_replace("/__GOOGLEAPITOKEN__/", $token2, $url);
-                    }
-
-                    if (strpos($locator, "__IDVAR__") > 0)
-                    {
-                        for ($ii = 0;$ii < 3;$ii++)
-                        {
-                            $locator_var = preg_replace('/__IDVAR__/', $ii, $locator);
-
-                            $internalAction = <<<EOD
-{
-  "parameters": {
-    "externalUrl": "$url",
-    "get": {
-      "$name": "$locator_var"
-    }
-  }
-}
-EOD;
-
-
-                            $internalAction_decoded = json_decode($internalAction, true);
-                            $externalServiceGetAction = externalServiceGetAction($internalAction_decoded);
-                            $value = '';
-                            $value = $externalServiceGetAction[$name];
-                            if ($value != null && $value != '')
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        $internalAction = <<<EOD
-                    {
-                    	"parameters": {
-                    		"externalUrl": "$url",
-                    		"get": {
-                    			"$name": "$locator"
-                    		}
-                    	}
-                    }
-EOD;
-                        $internalAction_decoded = json_decode($internalAction, true);
-
-                        $externalServiceGetAction = externalServiceGetAction($internalAction_decoded);
-
-                        $value = $externalServiceGetAction[$name];
-                    }
-                    $this->saveAlarmsOnDb($name, $value);
-                }
-                elseif ($locatorType == "xpath" || $locatorType == "html")
-                {
-                    //   var_dump("*******************************" . $locatorType);
-                    $internalAction = <<<EOD
-                    {
-                    	"parameters": {
-                    		"externalUrl": "$url",
-                    		"get": {
-                    			"$name": "$locator"
-                    		}
-                    	}
-                    }
-EOD;
-
-
-                    $internalAction_decoded = json_decode($internalAction, true);
-
-                    $externalServiceGetAction = externalPageGetAction($internalAction_decoded);
-
-                    $value = $externalServiceGetAction[$name];
-
-                    $this->saveAlarmsOnDb($name, $value);
-                }
-            }
-        }
+    $class = new saveDataHistoryAction();
+    $response = $class->saveDataHistoryAction($allAlarms);
     }
 
     function getAllAlarmsInDb($action)
@@ -238,8 +158,11 @@ if( $batch == 999)   {
 }
 else {  $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where active = $batch;";}
         $internalAction["parameters"]["query"] = $query;
+        $class = new sqlAction();
+        $response = $class->sql($internalAction);
 
-        return sql($internalAction);
+        return $response;
+
     }
 
     function getAlarmInDb($name)
@@ -247,19 +170,12 @@ else {  $query = "SELECT name as 'name', url as 'url', locator as 'locator', loc
         $query = "SELECT name as 'name', url as 'url', locator as 'locator', locatorType as 'locatorType' from syb_alarms_map where name ='$name';";
 
         $internalAction["parameters"]["query"] = $query;
+        $class = new sqlAction();
+        $response = $class->sql($internalAction);
 
-        return sql($internalAction);
+        return $response;
+
     }
 
-    function saveAlarmsOnDb($data, $value)
-    {
-        // apostrofi
-        $value = str_replace("'", "’", $value);
 
-        //   $query = "INSERT INTO syb_alarms_history (data,value) VALUES ('" . $data . "','" . $value . "');";
-        $query = "INSERT INTO syb_alarms_history (data,value) VALUES ('$data','$value');";
-
-        $internalAction["parameters"]["query"] = $query;
-        sql($internalAction);
-    }
 }
