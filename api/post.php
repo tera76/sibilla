@@ -6,6 +6,10 @@ include_once './logAction.php';
 include_once './loginAction.php';
 include_once './checkAccessToken.php';
 
+
+
+
+
 $GLOBALS['babboDiMinchia']['response'] = array();
 
 $input_json = file_get_contents('php://input'); //($_POST doesn't work here)
@@ -45,7 +49,13 @@ else {
 
 # call to action
 foreach ($actions as $action) {
-    callToAction($action);
+
+  $class = new callToAction();
+  # $testCallresponse = $class->sql($internalAction)[0][0];
+  $response = $class->callToAction($action);
+
+
+
     $name = $action["name"];
     if ($name == 'log') {
         $logs = new logAction();

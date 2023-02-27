@@ -5,6 +5,8 @@ if (isset($_GET['batch'])) $batch =  intval($_GET['batch']);
 else {
     $batch = 999;
 }
+
+
 /*
  * alarms is the cron scheduled for uploading data every 10 miutes.
  * */
@@ -31,6 +33,7 @@ EOD;
 
 $dataToarray = json_decode($data);
 $data = json_encode($dataToarray, JSON_PRETTY_PRINT);
+
 
 
 // $data = $_POST['request'];
@@ -77,7 +80,6 @@ $url = apiEntryPoint;
 
 
     $context = stream_context_create($opts);
-
     $response = file_get_contents($url, false, $context);
 
     if ($response === false) {
