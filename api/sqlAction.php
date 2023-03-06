@@ -4,7 +4,7 @@ require __DIR__ . '/conf/environment.conf.php';
 
 $debug= false ;
 if($debug){
-  echo "sql" . "\r\n";
+  echo "sql" . "<br>";
   $action = <<<EOD
   {
   	"from": "fdfsds",
@@ -13,12 +13,16 @@ if($debug){
   	}
   }
 EOD;
+
+;
+
+
 $class = new sqlAction();
 $response = $class->sql($action);
 
-
+echo  "<br>" . "<response>" . "<br>";
 var_dump($response) ;
-echo  "\r\n" . "fin_e" . "\r\n";
+echo  "<br>" . "</response>" . "<br>";
 die();
 }
 
@@ -52,7 +56,24 @@ function sql($action)
 
     $sql = $action["parameters"]["query"];
 
-    $dbConnect = new mysqli(host, username, password, database) or die("Errore durante la connessione al database");
+
+
+
+  //  $dbConnect = new mysqli(host, username, password, database) or die("Errore durante la connessione al database");
+
+    try {
+        $dbConnect = new mysqli(host, username, password, database);
+        if ($dbConnect->connect_errno) {
+            throw new Exception("Errore durante la connessione al database: " . $dbConnect->connect_error);
+        }
+    } catch (Exception $e) {
+      //  echo "Si è verificato un errore: " . $e->getMessage();
+        return $data=$e->getMessage();
+    }
+
+
+
+
 
 
     if (strpos(strtoupper($sql), 'SELECT') === 0) {
